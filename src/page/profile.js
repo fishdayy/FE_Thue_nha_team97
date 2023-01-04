@@ -7,6 +7,8 @@ import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
+import {storage} from "./firebase/config";
 
 const InputSchema = Yup.object().shape({
     fullName: Yup.string()
@@ -50,7 +52,6 @@ const Profile = () => {
     const handleShow = () => setShow(true);
 
     const user = useSelector(state => {
-        console.log(state)
         return state.user.userNow.user
     })
 
@@ -59,6 +60,49 @@ const Profile = () => {
     if (user) {
         userId = user.userFind[0].id;
     }
+    const [images, setImages] = useState([]);
+    const [urls, setUrls] = useState([]);
+    const [progress, setProgress] = useState(0);
+
+    const handleChange = (e) => {
+        for (let i = 0; i < e.target.files.length; i++) {
+            const newImage = e.target.files[i];
+            newImage["id"] = Math.random();
+            setImages((prevState) => [...prevState, newImage]);
+        }
+    };
+
+    const handleUpload = () => {
+        const promises = [];
+        if (images.length > 0) {
+            images.map((image) => {
+                const storageRef = ref(storage, `images/${image.name}`);
+                const uploadTask = uploadBytesResumable(storageRef, image);
+                promises.push(uploadTask);
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                        const progress = Math.round(
+                            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                        );
+                        setProgress(progress);
+                    },
+                    (error) => {
+                        console.log(error);
+                    },
+                    async () => {
+                        await getDownloadURL(uploadTask.snapshot.ref).then((downloadURLs) => {
+                            setUrls(prevState => [...prevState, downloadURLs])
+                            console.log("File available at", downloadURLs);
+                        });
+                    }
+                );
+            });
+        }
+        Promise.all(promises)
+            .then(() => alert("All images uploaded"))
+            .catch((err) => console.log(err));
+    };
     const dispatch = useDispatch();
     return (
         <div style={{backgroundColor: "white", marginTop: '10px'}}>
@@ -78,6 +122,10 @@ const Profile = () => {
                                     <div className="d-flex flex-column align-items-center text-center">
                                         <img src={user && user.userFind[0].avatar} alt="Admin"
                                              className="rounded-circle" width="150"></img>
+                                            <i className="fa fa-camera upload-button">
+                                                <input type={"file"} onChange={handleChange}/>
+                                                <button onClick={()=>dispatch(handleUpload)}>Upload</button>
+                                            </i>
                                         <div className="mt-3">
                                             <h4>{user && user.userFind[0].fullName}</h4>
                                             <p className="text-secondary mb-1">{user && user.userFind[0].job}</p>
@@ -182,7 +230,8 @@ const Profile = () => {
                                         job: "",
                                         phone: "",
                                         address: "",
-                                        email: ""
+                                        email: "",
+                                        avatar:urls[urls.length-1]
                                     }} onSubmit={(values) => {
                                         let data = {
                                             id: userId,
@@ -190,7 +239,8 @@ const Profile = () => {
                                             newJob: values.job,
                                             newPhone: values.phone,
                                             newAddress: values.address,
-                                            newEmail: values.email
+                                            newEmail: values.email,
+                                            newAvatar:urls[urls.length-1]
                                         }
                                         dispatch(updateProfile(data))
                                         Swal.fire({

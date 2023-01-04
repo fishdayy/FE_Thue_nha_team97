@@ -36,6 +36,7 @@ export const updateProfile = createAsyncThunk(
     'user/updateProfile',
     async (data) => {
         const res = await axios.post('http://localhost:8080/users/update-profile/' +data.id, data)
+        console.log(data)
         return res.data
     }
 )

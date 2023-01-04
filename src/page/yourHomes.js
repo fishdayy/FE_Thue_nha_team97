@@ -15,7 +15,7 @@ const YourHomes = () => {
     })
 
     let userId = useSelector(state => {
-        return state.user.userNow.userFind[0].id
+        return state.user.userNow.user.userFind[0].id
     })
     const dispatch = useDispatch()
 

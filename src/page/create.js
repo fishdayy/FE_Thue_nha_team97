@@ -33,7 +33,7 @@ const CreatePost = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userId = useSelector(state => {
-        return state.user.userNow.userFind[0].id
+        return state.user.userNow.user.userFind[0].id
     })
     const handleSubmit = async (values) => {
         let avatar = urls[0]
