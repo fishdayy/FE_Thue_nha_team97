@@ -107,7 +107,8 @@ const Profile = () => {
     return (
         <div style={{backgroundColor: "white", marginTop: '10px'}}>
             <div className="container">
-                <div className="main-body" style={{boxShadow: "0px 1px 25px 0px rgba(193,193,193,1)",borderRadius:"15px"}}>
+                <div className="main-body"
+                     style={{boxShadow: "0px 1px 25px 0px rgba(193,193,193,1)", borderRadius: "15px"}}>
                     <nav aria-label="breadcrumb" className="main-breadcrumb">
                         <ol className="breadcrumb">
                             <li className="breadcrumb-item active" aria-current="page">Your Profile</li>
@@ -120,19 +121,41 @@ const Profile = () => {
                                  style={{boxShadow: "0px 1px 5px 0px rgba(193,193,193,1)", borderRadius: "10px"}}>
                                 <div className="card-body">
                                     <div className="d-flex flex-column align-items-center text-center">
-                                        <img src={user && user.userFind[0].avatar} alt="Admin"
-                                             className="rounded-circle" width="150"></img>
-                                            <i className="fa fa-camera upload-button">
-                                                <input type={"file"} onChange={handleChange}/>
-                                                <button onClick={()=>dispatch(handleUpload)}>Upload</button>
-                                            </i>
+                                        <label
+                                            className="cursor-pointer flex items-center justify-center border border-dashed label-upload"
+                                            style={{width: "200px"}}
+                                        >
+                                            <input type="file" name="" id="" className="hidden-input"
+                                                   onChange={handleChange}/>
+
+                                            <div className="img-upload">
+                                                <img
+                                                    src={user && user.userFind[0].avatar}
+                                                    alt="Admin"
+                                                    className="max-w-[100%] imgAvatar"
+                                                />
+                                            </div>
+                                        </label>
+                                        <button onClick={() => dispatch(handleUpload)}
+                                                className="btn btn-info "
+                                                style={{
+                                                    marginTop:"20px",
+                                                    backgroundColor: "#dc3545",
+                                                    borderColor: "#dc3545",
+                                                    color: "white",
+                                                    borderRadius: "10px"
+                                                }}>Upload
+                                        </button>
+
                                         <div className="mt-3">
                                             <h4>{user && user.userFind[0].fullName}</h4>
                                             <p className="text-secondary mb-1">{user && user.userFind[0].job}</p>
                                             <p className="text-muted font-size-sm">{user && user.userFind[0].address}</p>
                                         </div>
 
-                                        <Button variant="primary" style={{backgroundColor: "#dc3545",borderColor:"#dc3545"}} onClick={handleShow}>
+                                        <Button variant="primary"
+                                                style={{backgroundColor: "#dc3545", borderColor: "#dc3545"}}
+                                                onClick={handleShow}>
                                             Change Password
                                         </Button>
 
@@ -141,13 +164,17 @@ const Profile = () => {
                                                 <Modal.Title>Change Password</Modal.Title>
                                             </Modal.Header>
                                             <Modal.Body>
-                                                <Formik validationSchema={InputSchema2} initialValues={{oldPassword: "", newPassword: "", repeatNewPassword: ""}}
+                                                <Formik validationSchema={InputSchema2} initialValues={{
+                                                    oldPassword: "",
+                                                    newPassword: "",
+                                                    repeatNewPassword: ""
+                                                }}
                                                         onSubmit={async (values, {resetForm}) => {
                                                             if (values.newPassword !== values.repeatNewPassword) {
                                                                 resetForm()
                                                                 Swal.fire({
                                                                     title: 'Error!',
-                                                                        text: 'New Password Repeat Wrong!',
+                                                                    text: 'New Password Repeat Wrong!',
                                                                     icon: 'error',
                                                                     confirmButtonText: 'Try Again'
                                                                 })
@@ -184,7 +211,7 @@ const Profile = () => {
                                                             name="oldPassword"
                                                             type="text"
                                                             placeholder="Old Password"
-                                                            style={{borderRadius:"10px"}}
+                                                            style={{borderRadius: "10px"}}
                                                         />
                                                         <ErrorMessage name="oldPassword" component="div"
                                                                       style={{color: "red"}}></ErrorMessage>
@@ -192,7 +219,7 @@ const Profile = () => {
                                                             name="newPassword"
                                                             type="text"
                                                             placeholder="New Password"
-                                                            style={{marginTop:"10px",borderRadius:"10px"}}
+                                                            style={{marginTop: "10px", borderRadius: "10px"}}
                                                         />
                                                         <ErrorMessage name="newPassword" component="div"
                                                                       style={{color: "red"}}></ErrorMessage>
@@ -200,13 +227,16 @@ const Profile = () => {
                                                             name="repeatNewPassword"
                                                             type="text"
                                                             placeholder="Repeat New Password"
-                                                            style={{marginTop:"10px",borderRadius:"10px"}}
+                                                            style={{marginTop: "10px", borderRadius: "10px"}}
                                                         />
                                                         <ErrorMessage name="repeatNewPassword" component="div"
                                                                       style={{color: "red"}}></ErrorMessage>
 
                                                         <Modal.Footer>
-                                                            <Button variant="secondary" style={{backgroundColor:"#dc3545",borderColor:"#dc3545"}} onClick={handleClose}>
+                                                            <Button variant="secondary" style={{
+                                                                backgroundColor: "#dc3545",
+                                                                borderColor: "#dc3545"
+                                                            }} onClick={handleClose}>
                                                                 Close
                                                             </Button>
                                                             <Button variant="primary" type={"submit"}>
@@ -231,7 +261,7 @@ const Profile = () => {
                                         phone: "",
                                         address: "",
                                         email: "",
-                                        avatar:urls[urls.length-1]
+                                        avatar: urls[urls.length - 1]
                                     }} onSubmit={(values) => {
                                         let data = {
                                             id: userId,
@@ -240,7 +270,7 @@ const Profile = () => {
                                             newPhone: values.phone,
                                             newAddress: values.address,
                                             newEmail: values.email,
-                                            newAvatar:urls[urls.length-1]
+                                            newAvatar: urls[urls.length - 1]
                                         }
                                         dispatch(updateProfile(data))
                                         Swal.fire({
@@ -255,7 +285,8 @@ const Profile = () => {
                                                 <div className="col-sm-3">
                                                     <h6 className="mb-0" style={{color: "red"}}>Full Name</h6>
                                                 </div>
-                                                <Field className="col-sm-8 text-secondary" name="fullName" style={{borderRadius: "10px"}}
+                                                <Field className="col-sm-8 text-secondary" name="fullName"
+                                                       style={{borderRadius: "10px"}}
                                                        placeholder={user && user.userFind[0].fullName}>
                                                 </Field>
                                                 <ErrorMessage name="fullName" component="div"
@@ -266,7 +297,8 @@ const Profile = () => {
                                                 <div className="col-sm-3">
                                                     <h6 className="mb-0" style={{color: "red"}}>Job</h6>
                                                 </div>
-                                                <Field className="col-sm-8 text-secondary" name="job" style={{borderRadius: "10px"}}
+                                                <Field className="col-sm-8 text-secondary" name="job"
+                                                       style={{borderRadius: "10px"}}
                                                        placeholder={user && user.userFind[0].job}>
                                                 </Field>
                                                 <ErrorMessage name="job" component="div"
@@ -277,7 +309,8 @@ const Profile = () => {
                                                 <div className="col-sm-3">
                                                     <h6 className="mb-0" style={{color: "red"}}>Phone</h6>
                                                 </div>
-                                                <Field type="number" className="col-sm-8 text-secondary" name="phone" style={{borderRadius: "10px"}}
+                                                <Field type="number" className="col-sm-8 text-secondary" name="phone"
+                                                       style={{borderRadius: "10px"}}
                                                        placeholder={user && user.userFind[0].phone}>
                                                 </Field>
                                                 <ErrorMessage name="phone" component="div"
@@ -288,7 +321,8 @@ const Profile = () => {
                                                 <div className="col-sm-3">
                                                     <h6 className="mb-0" style={{color: "red"}}>Address</h6>
                                                 </div>
-                                                <Field className="col-sm-8 text-secondary" name="address" style={{borderRadius: "10px"}}
+                                                <Field className="col-sm-8 text-secondary" name="address"
+                                                       style={{borderRadius: "10px"}}
                                                        placeholder={user && user.userFind[0].address}>
                                                 </Field>
                                                 <ErrorMessage name="address" component="div"
@@ -299,7 +333,8 @@ const Profile = () => {
                                                 <div className="col-sm-3">
                                                     <h6 className="mb-0" style={{color: "red"}}>Email</h6>
                                                 </div>
-                                                <Field className="col-sm-8 text-secondary" name="email" style={{borderRadius: "10px"}}
+                                                <Field className="col-sm-8 text-secondary" name="email"
+                                                       style={{borderRadius: "10px"}}
                                                        placeholder={user && user.userFind[0].email}>
                                                 </Field>
                                                 <ErrorMessage name="email" component="div"
@@ -311,7 +346,7 @@ const Profile = () => {
                                                     <button className="btn btn-info "
                                                             style={{
                                                                 backgroundColor: "#dc3545",
-                                                                borderColor:"#dc3545",
+                                                                borderColor: "#dc3545",
                                                                 color: "white",
                                                                 borderRadius: "10px"
                                                             }}>Update
