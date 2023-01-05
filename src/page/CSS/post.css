@@ -1,8 +1,8 @@
 .item-home{
-    border: 1px solid #ef9fa6;
-    border-radius: 10px;
+
     margin-bottom: 10px;
 }
 .item-home:hover{
-    border: 1px;
+    border: 1px solid #ef9fa6;
+    border-radius: 10px;
 }

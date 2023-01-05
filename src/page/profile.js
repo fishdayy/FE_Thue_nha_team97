@@ -100,7 +100,12 @@ const Profile = () => {
             });
         }
         Promise.all(promises)
-            .then(() => alert("All images uploaded"))
+            .then(() => Swal.fire({
+                icon: 'success',
+                title: "All images uploaded",
+                showConfirmButton: false,
+                timer: 1500
+            }))
             .catch((err) => console.log(err));
     };
     const dispatch = useDispatch();
@@ -139,7 +144,7 @@ const Profile = () => {
                                         <button onClick={() => dispatch(handleUpload)}
                                                 className="btn btn-info "
                                                 style={{
-                                                    marginTop:"20px",
+                                                    marginTop: "20px",
                                                     backgroundColor: "#dc3545",
                                                     borderColor: "#dc3545",
                                                     color: "white",

@@ -11,6 +11,7 @@ import {
 } from "firebase/storage";
 import {createImg} from "../service/imageService";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
 
 const InputSchema = Yup.object().shape({
     name: Yup.string()
@@ -89,15 +90,22 @@ const CreatePost = () => {
             });
         }
         Promise.all(promises)
-            .then(() => alert("All images uploaded"))
+            .then(() => Swal.fire({
+                icon: 'success',
+                title: "All images uploaded",
+                showConfirmButton: false,
+                timer: 1500
+            }))
             .catch((err) => console.log(err));
     };
     //---END---
     return (
         <>
             <div>
-                <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px"}}>Share your accommodation information with us</h2>
-                <p style={{textAlign: "center", marginBottom: "30px"}}>In this step, we'll ask what type of accommodation you rent and do you want guests to book the whole house or just a specific room</p>
+                <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px"}}>Share your accommodation
+                    information with us</h2>
+                <p style={{textAlign: "center", marginBottom: "30px"}}>In this step, we'll ask what type of
+                    accommodation you rent and do you want guests to book the whole house or just a specific room</p>
                 <div className="formCreate">
                     <div className="create" id="backgroundCreate" style={{float: "left"}}>
                         <Formik validationSchema={InputSchema} initialValues={{
@@ -111,7 +119,7 @@ const CreatePost = () => {
                             userId: userId
                         }} onSubmit={(values) => handleSubmit(values)}>
                             <Form id="createPost" tabIndex="500">
-                                <h3 style={{color:"#dc3545"}}>Create Post Rent Home</h3>
+                                <h3 style={{color: "#dc3545"}}>Create Post Rent Home</h3>
                                 <div className="name" style={{display: "flex"}}>
                                     <Field type="text" name="name"/>
                                     <ErrorMessage name="name" component="div" style={{color: "red"}}></ErrorMessage>
@@ -129,7 +137,8 @@ const CreatePost = () => {
                                 </div>
                                 <div className="description" style={{display: "flex"}}>
                                     <Field style={{height: "200px"}} name="description"/>
-                                    <ErrorMessage name="description" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <ErrorMessage name="description" component="div"
+                                                  style={{color: "red"}}></ErrorMessage>
                                     <label>Description</label>
                                 </div>
                                 <div className="category" style={{display: "flex"}}>
@@ -139,7 +148,8 @@ const CreatePost = () => {
                                         <option value="2">Hostel</option>
                                         <option value="3">Homestay</option>
                                     </Field>
-                                    <ErrorMessage name="categoryId" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <ErrorMessage name="categoryId" component="div"
+                                                  style={{color: "red"}}></ErrorMessage>
                                     <label>Category</label>
                                 </div>
                                 <div className="bedroom" style={{display: "flex"}}>
@@ -163,13 +173,19 @@ const CreatePost = () => {
                                     <label>Bathroom</label>
                                 </div>
                                 <div className="submit" style={{border: "1px solid #999"}}>
-                                    <button className="dark" >Submit</button>
+                                    <button className="dark">Submit</button>
                                 </div>
                             </Form>
                         </Formik>
                         <br/>
-                        <div className="divImg" style={{display:"flex"}} tabIndex="500">
-                            <input className="inputImg" style={{position: "relative", bottom: '119px', width: '70%', border: 'none',left:"5%"}}
+                        <div className="divImg" style={{display: "flex"}} tabIndex="500">
+                            <input className="inputImg" style={{
+                                position: "relative",
+                                bottom: '119px',
+                                width: '70%',
+                                border: 'none',
+                                left: "5%"
+                            }}
                                    type="file" multiple onChange={handleChange}/>
                             <button style={{color: 'red', position: 'relative', bottom: '7.5rem', right: '1%'}}
                                     onClick={() => dispatch(handleUpload)}>Upload
@@ -178,9 +194,9 @@ const CreatePost = () => {
                         <br/>
                     </div>
                     <br/><br/><br/><br/>
-                    <div className="infoCreate" id="backgroundCreate" style={{float: "left",borderRadius:"20px"}}>
+                    <div className="infoCreate" id="backgroundCreate" style={{float: "left", borderRadius: "20px"}}>
                         <form id="createPost" tabIndex="500">
-                            <ol >
+                            <ol>
                                 <div>
                                     <div>
                                         <img
@@ -193,7 +209,8 @@ const CreatePost = () => {
                                                 Tell us about your place
                                             </strong>
                                             <p>
-                                                Share some basic information, like the location of the rental property and how many guests can stay there.
+                                                Share some basic information, like the location of the rental property
+                                                and how many guests can stay there.
                                             </p>
                                         </li>
                                     </div>
@@ -215,7 +232,8 @@ const CreatePost = () => {
                                                 Make your rental home/room stand out
                                             </strong>
                                             <p>
-                                                Add 5 or more photos with a title and description – we'll help you do it. </p>
+                                                Add 5 or more photos with a title and description – we'll help you do
+                                                it. </p>
                                         </li>
                                     </div>
 
@@ -235,7 +253,8 @@ const CreatePost = () => {
                                                 Finalize and post rentals
                                             </strong>
                                             <p>
-                                                Choose whether you want to start with experienced hospitality, choose a starting price, or post a rental. </p>
+                                                Choose whether you want to start with experienced hospitality, choose a
+                                                starting price, or post a rental. </p>
                                         </li>
                                     </div>
                                 </div>

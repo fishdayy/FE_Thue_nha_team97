@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 const Navbar = () => {
     const navigate = useNavigate()
     const user = useSelector(state => {
-        console.log(state)
         return state.user.userNow.user.userFind[0]
     })
     return (
