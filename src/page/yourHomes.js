@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {removeHome, showYourHomes} from "../service/homeService";
+import {changeStatus, removeHome, showYourHomes} from "../service/homeService";
 import {Link} from "react-router-dom";
 import Search from "../components/Search";
 import Swal from 'sweetalert2';
@@ -15,7 +15,7 @@ const YourHomes = () => {
     })
 
     let userId = useSelector(state => {
-        return state.user.userNow.userFind[0].id
+        return state.user.userNow.user.userFind[0].id
     })
     const dispatch = useDispatch()
 
@@ -49,6 +49,7 @@ const YourHomes = () => {
                         <div>
                             <strong style={{textAlign: "left"}}>{item.name}</strong>
                             <p style={{fontWeight: "200", textAlign: "left", marginBottom: "0"}}>{item.address}</p>
+                            <strong style={{textAlign: "left"}}><label>{item.status}</label></strong><br/>
                             <strong style={{textAlign: "left"}}>{item.price}$<label
                                 style={{fontWeight: "200", marginLeft: "10px"}}>/ Day</label></strong>
                         </div>
@@ -56,10 +57,8 @@ const YourHomes = () => {
                             <button onClick={() => {
                                 const swalWithBootstrapButtons = Swal.mixin({
                                     customClass: {
-                                        confirmButton: 'btn btn-success',
-                                        cancelButton: 'btn btn-danger'
-                                    },
-                                    buttonsStyling: false
+                                        confirmButton: 'btn btn-success', cancelButton: 'btn btn-danger'
+                                    }, buttonsStyling: false
                                 })
                                 swalWithBootstrapButtons.fire({
                                     title: 'Are you sure?',
@@ -71,32 +70,59 @@ const YourHomes = () => {
                                     reverseButtons: true
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        swalWithBootstrapButtons.fire(
-                                            'Deleted!',
-                                            'Your file has been deleted.',
-                                            'success',
-                                            dispatch(removeHome(item.id))
-                                        )
-                                    } else if (
-                                        /* Read more about handling dismissals below */
-                                        result.dismiss === Swal.DismissReason.cancel
-                                    ) {
-                                        swalWithBootstrapButtons.fire(
-                                            'Cancelled',
-                                            'Your imaginary file is safe :)',
-                                            'error'
-                                        )
+                                        swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted.', 'success', dispatch(removeHome(item.id)))
+                                    } else if (/* Read more about handling dismissals below */
+                                        result.dismiss === Swal.DismissReason.cancel) {
+                                        swalWithBootstrapButtons.fire('Cancelled', 'Your imaginary file is safe :)', 'error')
                                     }
                                 })
                             }} className="btn btn-info "
                                     style={{
-                                        backgroundColor: "#dc3545", color: "white", borderRadius: "10px",marginRight:"10px",borderColor:"#dc3545"
+                                        backgroundColor: "#dc3545",
+                                        color: "white",
+                                        borderRadius: "10px",
+                                        marginRight: "10px",
+                                        borderColor: "#dc3545"
                                     }}>Delete
                             </button>
                             <button className="btn btn-info "
                                     style={{
-                                        backgroundColor: "#dc3545", color: "white", borderRadius: "10px",borderColor:"#dc3545"
+                                        backgroundColor: "#dc3545",
+                                        color: "white",
+                                        borderRadius: "10px",
+                                        borderColor: "#dc3545"
                                     }}>Edit
+                            </button>
+                            <button onClick={() => {
+                                let data = {
+                                    id: item.id,
+                                    userId: userId
+                                }
+                                if (item.status === 'Available') {
+                                    dispatch(changeStatus(data))
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Change status to Repair',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                } else {
+                                    dispatch(changeStatus(data))
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Change status to Available',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                }
+                            }} className="btn btn-info "
+                                    style={{
+                                        backgroundColor: "#dc3545",
+                                        color: "white",
+                                        borderRadius: "10px",
+                                        borderColor: "#dc3545",
+                                        marginLeft: "10px"
+                                    }}>Change Status
                             </button>
                         </div>
                     </div>))}

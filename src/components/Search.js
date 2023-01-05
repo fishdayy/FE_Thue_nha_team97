@@ -10,6 +10,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import {DateRange} from 'react-date-range';
 import {format} from "date-fns";
+import Swal from "sweetalert2";
 
 
 const Search = () => {
@@ -135,7 +136,17 @@ const Search = () => {
                                   style={{marginRight: "10px"}}>{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(date[0].endDate, "MM/dd/yyyy")}`}</span>
                             {openDate && <DateRange
                                 editableDateInputs={true}
-                                onChange={item => setDate([item.selection])}
+                                onChange={(item) => {
+                                    let yesterday = new Date(new Date().setDate(new Date().getDate()-1));
+                                    if (item.selection.startDate >= yesterday) {
+                                        setDate([item.selection])
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: "Can't choose this date!",
+                                        })
+                                    }
+                                }}
                                 moveRangeOnFirstSelection={false}
                                 ranges={date}
                                 className="date"

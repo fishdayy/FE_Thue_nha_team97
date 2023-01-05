@@ -1,15 +1,17 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {
+    changeStatus,
     createHome, removeHome,
     showHome,
     showHomesByAddress,
     showHomesByCategory,
-    showListHome,
+    showListHome, showTop4,
     showYourHomes
 } from "../../service/homeService";
 
 const initialState = {
-    listHome: []
+    listHome: [],
+    top4Home: []
 }
 const homeSlice = createSlice({
     name: 'home',
@@ -36,6 +38,12 @@ const homeSlice = createSlice({
         })
         builder.addCase(removeHome.fulfilled, (state, action) => {
             state.listHome = state.listHome.filter(item => item.id !== action.payload.id)
+        })
+        builder.addCase(changeStatus.fulfilled, (state, action) => {
+            state.listHome = [...action.payload]
+        })
+        builder.addCase(showTop4.fulfilled, (state, action) => {
+            state.top4Home = [...action.payload]
         })
     }
 })

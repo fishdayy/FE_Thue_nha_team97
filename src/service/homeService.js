@@ -56,3 +56,19 @@ export const removeHome = createAsyncThunk(
         return {...res.data.payload, id}
     }
 )
+
+export const changeStatus = createAsyncThunk(
+    'homes/changeStatus',
+    async (data) => {
+        const res = await axios.put('http://localhost:8080/homes/' + data.id, data)
+        return res.data
+    }
+)
+
+export const showTop4 = createAsyncThunk(
+    'home/showTop4',
+    async (data) => {
+        const res = await axios.get('http://localhost:8080/homes/show/top4')
+        return res.data
+    }
+)
