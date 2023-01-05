@@ -95,3 +95,78 @@ img {
 .shadow-none {
     box-shadow: none !important;
 }
+.flex {
+    display: flex;
+}
+.flex-col {
+    flex-direction: column;
+}
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.border {
+    border-width: 1px;
+}
+
+.border-dashed {
+    border-style: dashed;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.imgAvatar{
+    width: 200px;
+    height: 200px;
+    object-fit: cover
+}
+.img-upload {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transition: 0.4s;
+}
+
+.hidden-input {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.label-upload {
+    overflow: hidden;
+    position: relative;
+    min-height: 200px;
+    border-radius: 50%;
+}

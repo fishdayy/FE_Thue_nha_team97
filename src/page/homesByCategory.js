@@ -6,7 +6,6 @@ import Search from "../components/Search";
 const HomesByCategory = () => {
 
     let dataHome = useSelector(state => {
-        console.log(state)
         return state.home.listHome
     })
 

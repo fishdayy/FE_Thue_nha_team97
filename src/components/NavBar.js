@@ -40,6 +40,19 @@ const Navbar = () => {
                                             <li><Link to={'/home/your-homes'}><a className="dropdown-item">List My Posts</a></Link></li>
                                         </ul>
                                     </li>
+                                    <li className="nav-item dropdown">
+                                        <a className="nav-link dropdown-toggle" href="#" role="button"
+                                           data-bs-toggle="dropdown" aria-expanded="false">
+                                            History
+                                        </a>
+                                        <ul className="dropdown-menu">
+                                            <li><Link to={'/home/previous-rental-history'}><a className="dropdown-item" >Previous Rental History</a></Link></li>
+                                            <li>
+                                                <hr className="dropdown-divider"/>
+                                            </li>
+                                            <li><Link to={'/home/house-rental-history'}><a className="dropdown-item">Home Rental History</a></Link></li>
+                                        </ul>
+                                    </li>
                                 </ul>
                                 <ul className="username" style={{listStyle:"none",marginRight:"20px",marginBottom:"0px"}}>
                                     <li className="nav-item">

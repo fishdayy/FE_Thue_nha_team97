@@ -7,7 +7,6 @@ import Banner from "../components/Banner";
 const HomesByAddress = () => {
 
     let dataHome = useSelector(state => {
-        console.log(state)
         return state.home.listHome
     })
 

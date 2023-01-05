@@ -243,7 +243,8 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 
 .date {
     position: absolute;
-    top: 5px;
+    top: 630px;
+    z-index: 2;
 }
 
 .options {

@@ -4,6 +4,8 @@ import {showListHome} from "../service/homeService";
 import {Link} from "react-router-dom";
 import Search from "../components/Search";
 import Banner from "../components/Banner";
+import TopHome from "./topHome";
+import './CSS/post.css'
 
 const ListHome = () => {
     let dataHome = useSelector(state => {
@@ -27,11 +29,22 @@ const ListHome = () => {
         <div>
             <Search></Search>
         </div>
+        <div>
+            <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px",color:"#dc3545"}}>Top 4 popular area</h2>
+            <p style={{textAlign: "center", marginBottom: "30px"}}>Popular places to stay that are of interest to many tourists and often visit</p>
+        </div>
+        <div>
+            <TopHome></TopHome>
+        </div>
+        <div>
+            <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px",color:"#dc3545"}}>Recommended place for you</h2>
+            <p style={{textAlign: "center", marginBottom: "30px"}}>Cùng khám phá và tận hưởng kỳ nghỉ của bạn với những ưu đãi đặc biệt khi đến với Asahi Luxstay.</p>
+        </div>
         <div className="row">
             <div className="col-12">
                 <div className="row p-3">
                     {dataHome.map(item => (
-                        <div className="col-3">
+                        <div className="col-3 item-home">
                             <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
                                 <div className="carousel-inner">
                                     <div className="carousel-item active">
