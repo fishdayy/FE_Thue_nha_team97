@@ -12,10 +12,9 @@ const HomeRental = () => {
     })
 
     let income = useSelector(state => {
-        return state.contract.income[0]
+        if (state.contract.income[0] && state.contract.income[0].income == null) return 0;
+        return state.contract.income[0];
     })
-
-    console.log(income && income)
 
     let user = useSelector(state => {
         return state.user.userNow.user.userFind[0]
