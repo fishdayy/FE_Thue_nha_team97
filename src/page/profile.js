@@ -284,7 +284,7 @@ const Profile = () => {
                                             newPhone: values.phone,
                                             newAddress: values.address,
                                             newEmail: values.email,
-                                            newAvatar: urls[urls.length - 1]
+                                            newAvatar:urls[urls.length-1]
                                         }
                                         dispatch(updateProfile(data))
                                         Swal.fire({
