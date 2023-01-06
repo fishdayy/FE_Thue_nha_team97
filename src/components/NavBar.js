@@ -49,7 +49,7 @@ const Navbar = () => {
                                             <li>
                                                 <hr className="dropdown-divider"/>
                                             </li>
-                                            <li><Link to={'/home/house-rental-history'}><a className="dropdown-item">Home Rental History</a></Link></li>
+                                            <li><Link to={'/home/home-rental-history'}><a className="dropdown-item">Home Rental History</a></Link></li>
                                         </ul>
                                     </li>
                                 </ul>

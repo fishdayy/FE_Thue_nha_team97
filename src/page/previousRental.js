@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {showContractsByUserCreate} from "../service/contractService";
+import {showContractsByUserCreate, showIncome} from "../service/contractService";
+import {Field, Form, Formik} from "formik";
 
-const PreviousRental = () => {
+const HomeRental = () => {
 
     const dispatch = useDispatch();
 
@@ -10,7 +11,11 @@ const PreviousRental = () => {
         return state.contract.listContract;
     })
 
-    console.log(contracts)
+    let income = useSelector(state => {
+        return state.contract.income[0]
+    })
+
+    console.log(income && income)
 
     let user = useSelector(state => {
         return state.user.userNow.user.userFind[0]
@@ -35,6 +40,60 @@ const PreviousRental = () => {
                         <ol className="breadcrumb">
                             <li className="breadcrumb-item active" aria-current="page">Home Rental history</li>
                         </ol>
+                    </nav>
+                    <nav aria-label="breadcrumb" className="main-breadcrumb">
+                        <h5>Income</h5>
+                        <Formik initialValues={{
+                            monthFind: "", yearFind: ""
+                        }} onSubmit={(values) => {
+                            let timeFind = {
+                                "timeFind": values.yearFind + "-" + values.monthFind
+                            }
+                            dispatch(showIncome(timeFind))
+                        }}>
+                            <Form>
+                                <label style={{marginRight: "10px"}}><strong>Month</strong></label>
+                                <Field as={"select"} style={{marginRight: "40px"}} name={"monthFind"}>
+                                    <option disabled selected value={""}>Month</option>
+                                    <option value={"1"}>1</option>
+                                    <option value={"2"}>2</option>
+                                    <option value={"3"}>3</option>
+                                    <option value={"4"}>4</option>
+                                    <option value={"5"}>5</option>
+                                    <option value={"6"}>6</option>
+                                    <option value={"7"}>7</option>
+                                    <option value={"8"}>8</option>
+                                    <option value={"9"}>9</option>
+                                    <option value={"10"}>10</option>
+                                    <option value={"11"}>11</option>
+                                    <option value={"12"}>12</option>
+                                </Field>
+                                <label style={{marginRight: "10px"}}><strong>Year</strong></label>
+
+                                <Field style={{marginBottom: "10px"}} as={"select"} name={"yearFind"}>
+                                    <option value={""} disabled selected>Year</option>
+                                    <option value={"2023"}>2023</option>
+                                    <option value={"2024"}>2024</option>
+                                    <option value={"2025"}>2025</option>
+                                    <option value={"2026"}>2026</option>
+                                    <option value={"2027"}>2027</option>
+                                    <option value={"2028"}>2028</option>
+                                    <option value={"2029"}>2029</option>
+                                    <option value={"2030"}>2030</option>
+                                    <option value={"2031"}>2031</option>
+                                    <option value={"2032"}>2032</option>
+                                    <option value={"2033"}>2033</option>
+                                    <option value={"2034"}>2034</option>
+                                </Field><br/>
+                                <label className="submit" style={{marginBottom: "10px"}}>
+                                    <button className="btn btn-danger" type="submit">Submit</button>
+                                </label>
+                            </Form>
+                        </Formik>
+                    </nav>
+                    <nav aria-label="breadcrumb" className="main-breadcrumb">
+                        <label className="breadcrumb-item active"
+                               aria-current="page"><strong> Total:</strong> {income && income.income}<strong>$</strong></label>
                     </nav>
                     <hr/>
                     <div className="">
@@ -72,4 +131,4 @@ const PreviousRental = () => {
     </div>);
 };
 
-export default PreviousRental;
+export default HomeRental;

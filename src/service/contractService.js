@@ -4,16 +4,16 @@ import axios from "axios";
 
 export const showContracts = createAsyncThunk(
     'contract/showContracts',
-    async ()=>{
-        let res=  await axios.get('http://localhost:8080/contracts')
+    async () => {
+        let res = await axios.get('http://localhost:8080/contracts')
         return res.data
     }
 )
 
 export const showContractsByUserId = createAsyncThunk(
     'contract/showContracts',
-    async (id)=>{
-        let res=  await axios.get('http://localhost:8080/contracts/' + id)
+    async (id) => {
+        let res = await axios.get('http://localhost:8080/contracts/' + id)
         return res.data
     }
 )
@@ -28,8 +28,16 @@ export const createContract = createAsyncThunk(
 
 export const showContractsByUserCreate = createAsyncThunk(
     'contract/showContractsByUserCreate',
-    async (id)=>{
-        let res=  await axios.get('http://localhost:8080/contracts/show/' + id)
+    async (id) => {
+        let res = await axios.get('http://localhost:8080/contracts/show/' + id)
+        return res.data
+    }
+)
+
+export const showIncome = createAsyncThunk(
+    'contract/showIncome',
+    async (data) => {
+        let res = await axios.post('http://localhost:8080/contracts/income', data)
         return res.data
     }
 )

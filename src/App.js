@@ -14,6 +14,7 @@ import Profile from "./page/profile";
 import History from "./page/history";
 import PreviousRental from "./page/previousRental";
 import EditPost from "./page/editPost";
+import HomeRental from "./page/previousRental";
 
 function App() {
     let dataUser = useSelector(state => {
@@ -28,7 +29,7 @@ function App() {
                     <Route path={'/home'} element={<Home/>}>
                         <Route path={'/home'} element={<ListHome/>}></Route>
                         <Route path={'previous-rental-history'} element={<History/>}></Route>
-                        <Route path={'house-rental-history'} element={<PreviousRental/>}></Route>
+                        <Route path={'home-rental-history'} element={<HomeRental/>}></Route>
                         <Route path={'profile'} element={<Profile/>}></Route>
                         <Route path={'detail/:id'} element={<Detail></Detail>}></Route>
                         <Route path={'create'} element={<CreatePost/>}></Route>

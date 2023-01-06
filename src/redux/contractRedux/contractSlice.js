@@ -1,8 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {createContract, showContracts, showContractsByUserCreate} from "../../service/contractService";
+import {createContract, showContracts, showContractsByUserCreate, showIncome} from "../../service/contractService";
 
 const initialState = {
-    listContract: []
+    listContract: [],
+    income: ""
 }
 
 const contractSlice = createSlice({
@@ -17,6 +18,9 @@ const contractSlice = createSlice({
         })
         builder.addCase(showContractsByUserCreate.fulfilled, (state, action) => {
             state.listContract = [...action.payload]
+        })
+        builder.addCase(showIncome.fulfilled, (state, action) => {
+            state.income = [...action.payload]
         })
     }
 })
