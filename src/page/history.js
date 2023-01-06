@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {showContractsByUserId} from "../service/contractService";
+import {removeContract, showContractsByUserId} from "../service/contractService";
+import {removeHomesDays} from "../service/homesDaysService";
 
 const History = () => {
 
@@ -18,7 +19,7 @@ const History = () => {
         (async () => {
             await dispatch(showContractsByUserId(user.id))
         })()
-    }, [])
+    }, [contracts])
 
     return (<div>
         <div className="row">
@@ -59,7 +60,11 @@ const History = () => {
                                             <td className="">{item.timeEnd}</td>
                                             <td className="">{item.totalPrice}</td>
                                             <td className="">
-                                                <button className="btn btn-danger" type="submit">Cancel</button>
+                                                <button className="btn btn-danger" type="submit" onClick={() => {
+                                                    dispatch(removeContract(item.id)).then((res) => {
+                                                        dispatch(removeHomesDays(res.payload.idContract))
+                                                    })
+                                                }}>Cancel</button>
                                             </td>
                                         </tr>))}
                                         </tbody>

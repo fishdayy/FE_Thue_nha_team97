@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {checkHomesDays, checkTimeHomesDays, createHomesDays} from "../../service/homesDaysService";
+import {checkHomesDays, createHomesDays, removeHomesDays} from "../../service/homesDaysService";
 
 const initialState = {
     listHomesDays: [],
