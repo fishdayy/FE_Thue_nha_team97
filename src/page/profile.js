@@ -121,14 +121,6 @@ const Profile = () => {
                                  style={{boxShadow: "0px 1px 5px 0px rgba(193,193,193,1)", borderRadius: "10px"}}>
                                 <div className="card-body">
                                     <div className="d-flex flex-column align-items-center text-center">
-<<<<<<< HEAD
-                                        <img src={user && user.userFind[0].avatar} alt="Admin"
-                                             className="rounded-circle" width="150"></img>
-                                            <i className="fa fa-camera upload-button">
-                                                <input type={"file"} onChange={handleChange}/>
-                                                <button onClick={()=>dispatch(handleUpload)}>Upload</button>
-                                            </i>
-=======
                                         <label
                                             className="cursor-pointer flex items-center justify-center border border-dashed label-upload"
                                             style={{width: "200px"}}
@@ -155,7 +147,6 @@ const Profile = () => {
                                                 }}>Upload
                                         </button>
 
->>>>>>> fd3e30b12bf59240a0caa68e85d43d528cc22e7e
                                         <div className="mt-3">
                                             <h4>{user && user.userFind[0].fullName}</h4>
                                             <p className="text-secondary mb-1">{user && user.userFind[0].job}</p>
@@ -270,11 +261,7 @@ const Profile = () => {
                                         phone: "",
                                         address: "",
                                         email: "",
-<<<<<<< HEAD
-                                        avatar:urls[urls.length-1]
-=======
                                         avatar: urls[urls.length - 1]
->>>>>>> fd3e30b12bf59240a0caa68e85d43d528cc22e7e
                                     }} onSubmit={(values) => {
                                         let data = {
                                             id: userId,
@@ -283,11 +270,7 @@ const Profile = () => {
                                             newPhone: values.phone,
                                             newAddress: values.address,
                                             newEmail: values.email,
-<<<<<<< HEAD
                                             newAvatar:urls[urls.length-1]
-=======
-                                            newAvatar: urls[urls.length - 1]
->>>>>>> fd3e30b12bf59240a0caa68e85d43d528cc22e7e
                                         }
                                         dispatch(updateProfile(data))
                                         Swal.fire({

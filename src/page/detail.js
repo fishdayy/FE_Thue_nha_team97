@@ -11,9 +11,28 @@ import {DateRange} from "react-date-range";
 import Swal from "sweetalert2";
 import {createContract} from "../service/contractService";
 import {checkHomesDays, createHomesDays} from "../service/homesDaysService";
+import {geocodeByAddress, getLatLng} from "react-google-places-autocomplete";
+import GoogleMapReact from "google-map-react";
+import icons from "./icon";
 
+const AnyReactComponent = ({text}) => <div>{text}</div>;
+const {HiLocationMarker} = icons;
 const Detail = () => {
 
+    //GG map
+    const [coords, setCoords] = useState(null);
+    const address = useSelector(state => {
+        return state.home.listHome[0]
+    });
+    useEffect(() => {
+    const getCoords = async () => {
+        const result = await geocodeByAddress(address.address)
+        const latLng = await getLatLng(result[0])
+        setCoords(latLng)
+    }
+    address && getCoords()
+    }, [address])
+    //End map
     const Swal = require('sweetalert2')
 
     const [show, setShow] = useState(false);
@@ -184,7 +203,7 @@ const Detail = () => {
                                                 {openDate && <DateRange
                                                     editableDateInputs={true}
                                                     onChange={(item) => {
-                                                        let yesterday = new Date(new Date().setDate(new Date().getDate()-1));
+                                                        let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
                                                         if (item.selection.startDate >= yesterday) {
                                                             setDate([item.selection])
                                                         } else {
@@ -276,22 +295,20 @@ const Detail = () => {
                         </div>
                     </div>
                 </div>
-                {/*<div className="" style={{marginTop: "40px"}}>*/}
-                {/*    <div className="property_block_wrap style-2 ">*/}
-                {/*        <div className="property_block_wrap_header">*/}
-                {/*            <a data-bs-toggle="collapse" data-parent="#cMap" data-bs-target="#cMap"*/}
-                {/*               aria-controls="cMap" href="javascript:void(0);" aria-expanded="true">*/}
-                {/*                <h4 id="maptab" className="property_block_title fit-h5 container_scroll">Map</h4>*/}
-                {/*            </a>*/}
-                {/*        </div>*/}
-                {/*        <div id="cMap" className="panel-collapse collapse show">*/}
-                {/*            <div className="block-body  fit-h5-img">*/}
-                {/*                <iframe width="100%" height="400px"*/}
-                {/*                        src="https://maps.google.com/maps?q=,20.922882921199644&amp;t=&amp;z=15&amp;ie=UTF8&amp;iwloc=&amp;output=embed"></iframe>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                <div style={{height: '500px', width: '500px'}}>
+                    <GoogleMapReact
+                        bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
+                        defaultCenter={coords}
+                        defaultZoom={11}
+                        center={coords}
+                    >
+                        <AnyReactComponent
+                            lat={coords?.lat}
+                            lng={coords?.lng}
+                            text={<HiLocationMarker color={"red"} size={24}/>}
+                        />
+                    </GoogleMapReact>
+                </div>
                 <div className="comment" style={{marginTop: "20px"}}>
                     <strong>Comment</strong>
                 </div>
