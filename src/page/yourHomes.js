@@ -85,14 +85,14 @@ const YourHomes = () => {
                                         borderColor: "#dc3545"
                                     }}>Delete
                             </button>
-                            <button className="btn btn-info "
+                            <Link to={`/home/edit/${item.id}`}><button className="btn btn-info "
                                     style={{
                                         backgroundColor: "#dc3545",
                                         color: "white",
                                         borderRadius: "10px",
                                         borderColor: "#dc3545"
                                     }}>Edit
-                            </button>
+                            </button></Link>
                             <button onClick={() => {
                                 let data = {
                                     id: item.id,

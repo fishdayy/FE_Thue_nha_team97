@@ -1,7 +1,7 @@
 import '../page/CSS/login.css'
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {showHomesByAddress, showHomesByCategory, showListHome} from "../service/homeService";
+import {showHomesByAddress, showHomesByCategory, showHomesByTime, showListHome} from "../service/homeService";
 import {showCategories} from "../service/categoryService";
 import {Field, Form, Formik} from "formik";
 import {useNavigate} from "react-router-dom";
@@ -11,6 +11,7 @@ import 'react-date-range/dist/theme/default.css';
 import {DateRange} from 'react-date-range';
 import {format} from "date-fns";
 import Swal from "sweetalert2";
+import {checkTimeHomesDays} from "../service/homesDaysService";
 
 
 const Search = () => {
@@ -37,10 +38,10 @@ const Search = () => {
     const dataCategory = useSelector(state => {
         return state.category.listCategory
     })
+
     useEffect(() => {
         dispatch(showCategories())
     }, [])
-
 
     return (
         <div className="container"
@@ -105,11 +106,27 @@ const Search = () => {
 
             </ul>
             <ul className="nav nav-pills mb-3  nav-pills-flex">
-                <Formik initialValues={{address: "", bedroom: "", bathroom: "", price: ""}} onSubmit={(values, {resetForm}) => {
-                    dispatch(showHomesByAddress(values))
-                    resetForm()
-                    navigate('/home/homes-find')
-                }}>
+                <Formik initialValues={{address: "", bedroom: "", bathroom: "", price: ""}}
+                        onSubmit={(values, {resetForm}) => {
+                            let data = {
+                                timeStart: `${date[0].startDate.getFullYear() + '-' + (date[0].startDate.getMonth() + 1) + '-' + date[0].startDate.getDate()}`,
+                                timeEnd: `${date[0].endDate.getFullYear() + '-' + (date[0].endDate.getMonth() + 1) + '-' + date[0].endDate.getDate()}`,
+                            }
+                            dispatch(checkTimeHomesDays(data)).then((data) => {
+                                dispatch(showHomesByTime({homeIds: data.payload.homeId}))
+                            })
+                            navigate('/home/homes-find')
+                            dispatch(showHomesByAddress(values))
+                            resetForm()
+                            setDate([
+                                {
+                                    startDate: new Date(),
+                                    endDate: new Date(),
+                                    key: "selection"
+                                }
+                            ])
+                            setOpenDate(false)
+                        }}>
                     <Form className="nav nav-pills mb-3  nav-pills-flex" style={{width: "100%"}}>
                         <div style={{
                             display: "flex",
@@ -120,7 +137,8 @@ const Search = () => {
                             borderRadius: "5px"
                         }}>
                             <i className="fa-solid fa-magnifying-glass" style={{padding: "0 10px"}}></i>
-                            <Field name={"address"} type="text" placeholder="Where are you going?" className="text-search"
+                            <Field name={"address"} type="text" placeholder="Where are you going?"
+                                   className="text-search"
                                    style={{border: "none", marginRight: "5px"}}/>
                         </div>
                         <div style={{
@@ -137,7 +155,7 @@ const Search = () => {
                             {openDate && <DateRange
                                 editableDateInputs={true}
                                 onChange={(item) => {
-                                    let yesterday = new Date(new Date().setDate(new Date().getDate()-1));
+                                    let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
                                     if (item.selection.startDate >= yesterday) {
                                         setDate([item.selection])
                                     } else {
@@ -161,7 +179,7 @@ const Search = () => {
                             borderRadius: "5px"
                         }}>
                             <i className="fa-solid fa-bed" style={{padding: "0 10px"}}></i>
-                            <Field as="select" name={"bedroom"} type="number" style={{border:"none"}}>
+                            <Field as="select" name={"bedroom"} type="number" style={{border: "none"}}>
                                 <option value={""}>Bedroom</option>
                                 <option value={1}>1</option>
                                 <option value={2}>2</option>
@@ -177,7 +195,7 @@ const Search = () => {
                             borderRadius: "5px"
                         }}>
                             <i className="fa-solid fa-sink" style={{padding: "0 10px"}}></i>
-                            <Field as="select" name={"bathroom"} type="number" style={{border:"none"}}>
+                            <Field as="select" name={"bathroom"} type="number" style={{border: "none"}}>
                                 <option value={""}>Bathroom</option>
                                 <option value={1}>1</option>
                                 <option value={2}>2</option>

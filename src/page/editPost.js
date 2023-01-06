@@ -2,52 +2,76 @@ import './CSS/login.css';
 import './CSS/create.css';
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {createHome} from "../service/homeService";
-import React, {useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import {createHome, editHome, showHome} from "../service/homeService";
+import React, {useEffect, useState} from "react";
 import {storage} from "./firebase/config";
 import {
     ref, getDownloadURL, uploadBytesResumable
 } from "firebase/storage";
-import {createImg} from "../service/imageService";
-import * as Yup from "yup";
+import {createImg, showImagesByHomeId} from "../service/imageService";
 import Swal from "sweetalert2";
 
-const InputSchema = Yup.object().shape({
-    name: Yup.string()
-        .required("Please Enter Name!"),
-    address: Yup.string()
-        .required("Please Enter Address!"),
-    price: Yup.number()
-        .required("Please Enter Price!"),
-    description: Yup.string()
-        .required("Please Enter Description!"),
-    categoryId: Yup.number()
-        .required("Please Enter Category!"),
-    bedroom: Yup.number()
-        .required("Please Enter Bedroom!"),
-    bathroom: Yup.number()
-        .required("Please Enter Bathroom!"),
-})
-
-const CreatePost = () => {
+const EditPost = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userId = useSelector(state => {
         return state.user.userNow.user.userFind[0].id
     })
+    let {id} = useParams();
+
+    useEffect(() => {
+        (async () => {
+            await dispatch(showHome(id))
+        })()
+    }, [])
+
+    let home = useSelector(state => {
+        return state.home.listHome[0]
+    })
+    console.log(home)
+
     const handleSubmit = async (values) => {
         let avatar = urls[0]
-        let data = {...values, avatar}
-        console.log(data)
-        let homes = await dispatch(createHome(data))
+        if (values.name === "") {
+            values.name = home.name
+        }
+        if (values.address === "") {
+            values.address = home.address
+        }
+        if (values.price === "") {
+            values.price = home.price
+        }
+        if (values.description === "") {
+            values.description = home.description
+        }
+        if (values.categoryId === "") {
+            values.categoryId = home.categoryId
+        }
+        if (values.bedroom === "") {
+            values.bedroom = home.bedroom
+        }
+        if (values.bathroom === "") {
+            values.bathroom = home.bathroom
+        }
+        let data = {...values, id, avatar}
+        let homes = await dispatch(editHome(data))
         let homeId = await homes.payload.idHome
         for (let i = 0; i < urls.length; i++) {
             let image = urls[i]
             let data = {homeId, image}
             await dispatch(createImg(data))
         }
-        navigate('/home')
+        Swal.fire({
+            icon: 'success',
+            title: 'Updated',
+            showConfirmButton: false,
+            timer: 1500
+        })
+        setTimeout(() => {
+            clearTimeout()
+            navigate('/home/your-homes')
+        }, 1500)
     }
     //Upload IMG
     const [images, setImages] = useState([]);
@@ -92,7 +116,7 @@ const CreatePost = () => {
         Promise.all(promises)
             .then(() => Swal.fire({
                 icon: 'success',
-                title: "All images uploaded",
+                title: "Uploaded",
                 showConfirmButton: false,
                 timer: 1500
             }))
@@ -108,7 +132,7 @@ const CreatePost = () => {
                     accommodation you rent and do you want guests to book the whole house or just a specific room</p>
                 <div className="formCreate">
                     <div className="create" id="backgroundCreate" style={{float: "left"}}>
-                        <Formik validationSchema={InputSchema} initialValues={{
+                        <Formik initialValues={{
                             name: '',
                             address: '',
                             price: '',
@@ -119,57 +143,48 @@ const CreatePost = () => {
                             userId: userId
                         }} onSubmit={(values) => handleSubmit(values)}>
                             <Form id="createPost" tabIndex="500">
-                                <h3 style={{color: "#dc3545"}}>Create Post Rent Home</h3>
+                                <h3 style={{color: "#dc3545"}}>Edit Post Rent Home</h3>
                                 <div className="name" style={{display: "flex"}}>
-                                    <Field type="text" name="name"/>
-                                    <ErrorMessage name="name" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <Field type="text" name="name" placeholder={home && home.name}/>
                                     <label>Name</label>
                                 </div>
                                 <div className="address" style={{display: "flex"}}>
-                                    <Field type="text" name="address"/>
-                                    <ErrorMessage name="address" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <Field type="text" name="address" placeholder={home && home.address}/>
                                     <label>Address</label>
                                 </div>
                                 <div className="Price" style={{display: "flex"}}>
-                                    <Field type="number" name="price"/>
-                                    <ErrorMessage name="price" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <Field type="number" name="price" placeholder={home && home.price}/>
                                     <label>Price</label>
                                 </div>
                                 <div className="description" style={{display: "flex"}}>
-                                    <Field style={{height: "200px"}} name="description"/>
-                                    <ErrorMessage name="description" component="div"
-                                                  style={{color: "red"}}></ErrorMessage>
+                                    <Field style={{height: "200px"}} name="description" placeholder={home &&home.description}/>
                                     <label>Description</label>
                                 </div>
                                 <div className="category" style={{display: "flex"}}>
                                     <Field as={"select"} name={"categoryId"}>
-                                        <option value="">Category</option>
+                                        <option value="">{home &&home.category}</option>
                                         <option value="1">House</option>
                                         <option value="2">Homestay</option>
                                         <option value="3">Hotel</option>
                                     </Field>
-                                    <ErrorMessage name="categoryId" component="div"
-                                                  style={{color: "red"}}></ErrorMessage>
                                     <label>Category</label>
                                 </div>
                                 <div className="bedroom" style={{display: "flex"}}>
                                     <Field as={"select"} name={"bedroom"}>
-                                        <option value="">Bedroom</option>
+                                        <option value="">{home &&home.bedroom}</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                     </Field>
-                                    <ErrorMessage name="bedroom" component="div" style={{color: "red"}}></ErrorMessage>
                                     <label>Bedroom</label>
                                 </div>
                                 <div className="bathroom" style={{display: "flex"}}>
                                     <Field as={"select"} name={"bathroom"}>
-                                        <option value="">Bathroom</option>
+                                        <option value="">{home &&home.bathroom}</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                     </Field>
-                                    <ErrorMessage name="bathroom" component="div" style={{color: "red"}}></ErrorMessage>
                                     <label>Bathroom</label>
                                 </div>
                                 <div className="submit" style={{border: "1px solid #999"}}>
@@ -187,8 +202,8 @@ const CreatePost = () => {
                                 left: "5%"
                             }}
                                    type="file" multiple onChange={handleChange}/>
-                            <button style={{color: 'red', position: 'relative', bottom: '7.5rem', right: '1%'}}
-                                    onClick={() => dispatch(handleUpload)}>Upload
+                            <button style={{color: 'red', position: 'relative',width:"215px", bottom: '7.5rem'}}
+                                    onClick={() => dispatch(handleUpload)}>Change Avatar
                             </button>
                         </div>
                         <br/>
@@ -268,4 +283,4 @@ const CreatePost = () => {
         </>
     )
 }
-export default CreatePost;
+export default EditPost;

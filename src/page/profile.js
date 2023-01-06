@@ -13,23 +13,17 @@ import {storage} from "./firebase/config";
 const InputSchema = Yup.object().shape({
     fullName: Yup.string()
         .min(3, "Too Short!")
-        .max(20, "Too Long")
-        .required("Please Enter Your Name!"),
+        .max(20, "Too Long"),
     job: Yup.string()
-        .min(3, "Too Short!")
-        .max(20, "Too Long")
-        .required("Please Enter Your Job!"),
+        .min(3, "Too Short!"),
     address: Yup.string()
-        .min(3, "Too Short!")
-        .required("Please Enter Your Address!"),
+        .min(3, "Too Short!"),
     phone: Yup.string()
         .min(10, "Too Short!")
-        .max(10, "Too Long")
-        .required("Please Enter Your Phone!"),
+        .max(10, "Too Long"),
     email: Yup.string()
         .min(3, "Too Short!")
         .email("Not an Email!")
-        .required("Please Enter Your Email!"),
 })
 
 const InputSchema2 = Yup.object().shape({
@@ -100,7 +94,12 @@ const Profile = () => {
             });
         }
         Promise.all(promises)
-            .then(() => alert("All images uploaded"))
+            .then(() => Swal.fire({
+                icon: 'success',
+                title: "All images uploaded",
+                showConfirmButton: false,
+                timer: 1500
+            }))
             .catch((err) => console.log(err));
     };
     const dispatch = useDispatch();
@@ -139,7 +138,7 @@ const Profile = () => {
                                         <button onClick={() => dispatch(handleUpload)}
                                                 className="btn btn-info "
                                                 style={{
-                                                    marginTop:"20px",
+                                                    marginTop: "20px",
                                                     backgroundColor: "#dc3545",
                                                     borderColor: "#dc3545",
                                                     color: "white",
@@ -231,7 +230,6 @@ const Profile = () => {
                                                         />
                                                         <ErrorMessage name="repeatNewPassword" component="div"
                                                                       style={{color: "red"}}></ErrorMessage>
-
                                                         <Modal.Footer>
                                                             <Button variant="secondary" style={{
                                                                 backgroundColor: "#dc3545",
@@ -263,6 +261,22 @@ const Profile = () => {
                                         email: "",
                                         avatar: urls[urls.length - 1]
                                     }} onSubmit={(values) => {
+                                        if  (values.fullName === "") {
+                                            values.fullName = user && user.userFind[0].fullName
+                                        }
+                                        if (values.job === "") {
+                                            values.job = user && user.userFind[0].job
+                                        }
+                                        if (values.phone === "") {
+                                            values.phone = user && user.userFind[0].phone
+                                        }
+                                        if (values.address === "") {
+                                            values.address = user && user.userFind[0].address
+                                        }
+                                        if (values.email === "") {
+                                            values.email = user && user.userFind[0].email
+                                        }
+                                        console.log(values)
                                         let data = {
                                             id: userId,
                                             newFullName: values.fullName,

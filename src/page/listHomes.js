@@ -60,8 +60,10 @@ const ListHome = () => {
                                 </div>
                             </div>
                             <div>
-                                <strong style={{textAlign: "left"}}>{item.name}</strong>
-                                <p style={{fontWeight: "200", textAlign: "left", marginBottom: "0"}}>{item.address}</p>
+                                <h5 style={{marginBottom:"10px"}}> <strong style={{textAlign: "left"}}>{item.name}</strong></h5>
+                                <i className="fa-sharp fa-solid fa-map-location" style={{marginRight:"10px"}}></i>
+                                <label style={{fontWeight: "200", textAlign: "left", marginBottom: "0"}}>{item.address}</label><br/>
+                                <i className="fa-solid fa-money-bill" style={{marginRight:"10px"}}></i>
                                 <strong style={{textAlign: "left"}}>{item.price}$<label
                                     style={{fontWeight: "200", marginLeft: "10px"}}>/ Day</label></strong>
                             </div>

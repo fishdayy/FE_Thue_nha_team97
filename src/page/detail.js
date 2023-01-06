@@ -97,9 +97,9 @@ const Detail = () => {
                     }, buttonsStyling: false
                 })
                 swalWithBootstrapButtons.fire({
-                    text: `From: ${date[0].startDate.getFullYear() + '-' + (date[0].startDate.getMonth() + 1) + '-' + date[0].startDate.getDate()}
-                   To: ${date[0].endDate.getFullYear() + '-' + (date[0].endDate.getMonth() + 1) + '-' + date[0].endDate.getDate()}
-                   Price: ${(get_day_of_time(date[0].startDate, date[0].endDate) + 1) * (dataHome[0] && dataHome[0].price)}`,
+                    html: `<div><strong>From:</strong>  ${date[0].startDate.getFullYear() + '-' + (date[0].startDate.getMonth() + 1) + '-' + date[0].startDate.getDate()}
+                   <strong>To: </strong> ${date[0].endDate.getFullYear() + '-' + (date[0].endDate.getMonth() + 1) + '-' + date[0].endDate.getDate()}<br/>
+                   <strong>Price:</strong> ${(get_day_of_time(date[0].startDate, date[0].endDate) + 1) * (dataHome[0] && dataHome[0].price)} $</div>`,
                     title: 'Are you sure booking?',
                     icon: 'question',
                     showCancelButton: true,

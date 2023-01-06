@@ -13,6 +13,7 @@ import CreatePost from "./page/create";
 import Profile from "./page/profile";
 import History from "./page/history";
 import PreviousRental from "./page/previousRental";
+import EditPost from "./page/editPost";
 
 function App() {
     let dataUser = useSelector(state => {
@@ -34,6 +35,7 @@ function App() {
                         <Route path={'your-homes'} element={<YourHomes></YourHomes>}></Route>
                         <Route path={'homes-by-category'} element={<HomesByCategory></HomesByCategory>}></Route>
                         <Route path={'homes-find'} element={<HomesByAddress></HomesByAddress>}></Route>
+                        <Route path={'edit/:id'} element={<EditPost></EditPost>}></Route>
                     </Route>
                     :
                     <Route path="*" element={<Login/>}/>

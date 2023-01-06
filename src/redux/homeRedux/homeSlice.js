@@ -1,10 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {
     changeStatus,
-    createHome, removeHome,
+    createHome, editHome, removeHome,
     showHome,
     showHomesByAddress,
-    showHomesByCategory,
+    showHomesByCategory, showHomesByTime,
     showListHome, showTop4,
     showYourHomes
 } from "../../service/homeService";
@@ -44,6 +44,12 @@ const homeSlice = createSlice({
         })
         builder.addCase(showTop4.fulfilled, (state, action) => {
             state.top4Home = [...action.payload]
+        })
+        builder.addCase(editHome.fulfilled, (state, action) => {
+            console.log(action.payload)
+        })
+        builder.addCase(showHomesByTime.fulfilled, (state, action) => {
+            state.listHome = [...action.payload]
         })
     }
 })
