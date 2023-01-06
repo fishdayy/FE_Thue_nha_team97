@@ -17,3 +17,11 @@ export const checkHomesDays = createAsyncThunk(
         return res.data
     }
 )
+
+export const checkTimeHomesDays = createAsyncThunk(
+    'homesDays/checkTimeHomesDays',
+    async (data)=>{
+        let res=  await axios.post('http://localhost:8080/homes-days/check-time', data)
+        return res.data
+    }
+)

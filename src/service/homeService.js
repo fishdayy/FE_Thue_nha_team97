@@ -72,3 +72,20 @@ export const showTop4 = createAsyncThunk(
         return res.data
     }
 )
+
+export const editHome = createAsyncThunk(
+    'home/editHome',
+    async (data) => {
+        const res = await axios.put('http://localhost:8080/homes/edit/' + data.id, data)
+        return res.data
+    }
+)
+
+export const showHomesByTime = createAsyncThunk(
+    'home/showHomesByTime',
+    async (data) => {
+        console.log(data)
+        const res = await axios.post('http://localhost:8080/homes/find/by-time', data)
+        return res.data
+    }
+)
