@@ -25,12 +25,12 @@ const Detail = () => {
         return state.home.listHome[0]
     });
     useEffect(() => {
-    const getCoords = async () => {
-        const result = await geocodeByAddress(address.address)
-        const latLng = await getLatLng(result[0])
-        setCoords(latLng)
-    }
-    address && getCoords()
+        const getCoords = async () => {
+            const result = await geocodeByAddress(address.address)
+            const latLng = await getLatLng(result[0])
+            setCoords(latLng)
+        }
+        address && getCoords()
     }, [address])
     //End map
     const Swal = require('sweetalert2')
@@ -108,7 +108,14 @@ const Detail = () => {
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        swalWithBootstrapButtons.fire('Successful', 'You have booked!', 'success', dispatch(createContract(data)), dispatch(createHomesDays(data)), navigate('/home'))
+                        swalWithBootstrapButtons.fire('Successful', 'You have booked!', 'success',
+                            dispatch(createContract(data)).then((res)=>{
+                                let idContract = res.payload.idContract
+                                let newData = {...data,idContract}
+                                dispatch(createHomesDays(newData))
+                            }),
+                            navigate('/home')
+                        )
                     } else if (/* Read more about handling dismissals below */
                         result.dismiss === Swal.DismissReason.cancel) {
                         swalWithBootstrapButtons.fire('Cancelled', "You haven't booked yet!", 'error')
