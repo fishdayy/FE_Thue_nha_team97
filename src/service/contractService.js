@@ -37,7 +37,7 @@ export const showContractsByUserCreate = createAsyncThunk(
 export const showIncome = createAsyncThunk(
     'contract/showIncome',
     async (data) => {
-        let res = await axios.post('http://localhost:8080/contracts/income', data)
+        let res = await axios.post('http://localhost:8080/contracts/' + data.id, data)
         return res.data
     }
 )

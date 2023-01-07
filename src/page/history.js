@@ -2,6 +2,8 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {removeContract, showContractsByUserId} from "../service/contractService";
 import {removeHomesDays} from "../service/homesDaysService";
+import Swal from "sweetalert2";
+import {removeHome} from "../service/homeService";
 
 const History = () => {
 
@@ -61,10 +63,32 @@ const History = () => {
                                             <td className="">{item.totalPrice}</td>
                                             <td className="">
                                                 <button className="btn btn-danger" type="submit" onClick={() => {
-                                                    dispatch(removeContract(item.id)).then((res) => {
-                                                        dispatch(removeHomesDays(res.payload.idContract))
+                                                    const swalWithBootstrapButtons = Swal.mixin({
+                                                        customClass: {
+                                                            confirmButton: 'btn btn-success',
+                                                            cancelButton: 'btn btn-danger'
+                                                        }, buttonsStyling: false
                                                     })
-                                                }}>Cancel</button>
+                                                    swalWithBootstrapButtons.fire({
+                                                        title: 'Are you sure?',
+                                                        text: "You won't be able to revert this!",
+                                                        icon: 'warning',
+                                                        showCancelButton: true,
+                                                        confirmButtonText: 'Yes, delete it!',
+                                                        cancelButtonText: 'No, cancel!  ',
+                                                        reverseButtons: true
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted.', 'success', dispatch(removeContract(item.id)).then((res) => {
+                                                                dispatch(removeHomesDays(res.payload.idContract))
+                                                            }))
+                                                        } else if (/* Read more about handling dismissals below */
+                                                            result.dismiss === Swal.DismissReason.cancel) {
+                                                            swalWithBootstrapButtons.fire('Cancelled', 'Your imaginary file is safe :)', 'error')
+                                                        }
+                                                    })
+                                                }}>Cancel
+                                                </button>
                                             </td>
                                         </tr>))}
                                         </tbody>

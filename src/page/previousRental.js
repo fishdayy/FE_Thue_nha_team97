@@ -45,15 +45,16 @@ const HomeRental = () => {
                         <Formik initialValues={{
                             monthFind: "", yearFind: ""
                         }} onSubmit={(values) => {
-                            let timeFind = {
+                            let data = {
+                                id: user.id,
                                 "timeFind": values.yearFind + "-" + values.monthFind
                             }
-                            dispatch(showIncome(timeFind))
+                            dispatch(showIncome(data))
                         }}>
                             <Form>
                                 <label style={{marginRight: "10px"}}><strong>Month</strong></label>
                                 <Field as={"select"} style={{marginRight: "40px"}} name={"monthFind"}>
-                                    <option disabled selected value={""}>Month</option>
+                                    <option value={""}>Month</option>
                                     <option value={"1"}>1</option>
                                     <option value={"2"}>2</option>
                                     <option value={"3"}>3</option>
