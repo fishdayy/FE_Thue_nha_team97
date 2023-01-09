@@ -18,7 +18,7 @@ const userSlice = createSlice({
             localStorage.setItem('user',JSON.stringify(action.payload))
         })
         builder.addCase(changePassword.fulfilled, (state, action) => {
-            state.userNow = action.payload.user
+            state.userNow = action.payload
             localStorage.setItem('user', JSON.stringify(action.payload))
         })
         builder.addCase(updateProfile.fulfilled, (state, action) => {

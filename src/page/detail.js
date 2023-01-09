@@ -25,13 +25,19 @@ const Detail = () => {
         return state.home.listHome[0]
     });
     useEffect(() => {
-        const getCoords = async () => {
-            const result = await geocodeByAddress(address.address)
-            const latLng = await getLatLng(result[0])
-            setCoords(latLng)
-        }
-        address && getCoords()
-    }, [address])
+        console.log(1)
+        navigator.geolocation.getCurrentPosition(({coords: {longitude, latitude}}) => {
+            setCoords({lat: latitude, lng: longitude})
+        })
+    }, [])
+    // useEffect(() => {
+    //     const getCoords = async () => {
+    //         const result = await geocodeByAddress(address.address)
+    //         const latLng = await getLatLng(result[0])
+    //         setCoords(latLng)
+    //     }
+    //     address && getCoords()
+    // }, [address])
     //End map
     const Swal = require('sweetalert2')
 
@@ -63,7 +69,7 @@ const Detail = () => {
     })
 
     let dataHome = useSelector(state => {
-        return state.home.listHome
+        return state.home.detailHome
     })
 
 
@@ -302,7 +308,8 @@ const Detail = () => {
                         </div>
                     </div>
                 </div>
-                <div style={{height: '500px', width: '500px'}}>
+                <strong className="col-12">Map</strong>
+                <div style={{height: '500px', width: '100%'}}>
                     <GoogleMapReact
                         bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
                         defaultCenter={coords}

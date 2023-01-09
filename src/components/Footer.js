@@ -9,7 +9,7 @@ const Footer = () => {
                     <hr/>
                     <div className="row">
                         <div className="col">
-                            <h4>Support</h4>
+                            <h4 style={{color:"#dc3545"}}>Support</h4>
                             <ul className="list-unstyled">
                                 <li>Help Center</li>
                                 <li>Team97Cover</li>
@@ -20,14 +20,14 @@ const Footer = () => {
                             </ul>
                         </div>
                         <div className="col">
-                            <h4>Community</h4>
+                            <h4 style={{color:"#dc3545"}}>Community</h4>
                             <ul className="list-unstyled">
                                 <li>Team97.org: disaster relief housing</li>
                                 <li>Combating discrimination</li>
                             </ul>
                         </div>
                         <div className="col">
-                            <h4>Hosting</h4>
+                            <h4 style={{color:"#dc3545"}}>Hosting</h4>
                             <ul className="list-unstyled">
                                 <li>Team97 your home</li>
                                 <li>Team97Cover for Hosts</li>
@@ -37,7 +37,7 @@ const Footer = () => {
                             </ul>
                         </div>
                         <div className="col">
-                            <h4>Team97</h4>
+                            <h4 style={{color:"#dc3545"}}>Team97</h4>
                             <ul className="list-unstyled">
                                 <li>Newsroom</li>
                                 <li>Learn about new features</li>

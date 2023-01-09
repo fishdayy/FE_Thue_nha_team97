@@ -102,7 +102,7 @@ const CreatePost = () => {
     return (
         <>
             <div>
-                <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px"}}>Share your accommodation
+                <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px",color:"#dc3545"}}>Share your accommodation
                     information with us</h2>
                 <p style={{textAlign: "center", marginBottom: "30px"}}>In this step, we'll ask what type of
                     accommodation you rent and do you want guests to book the whole house or just a specific room</p>
@@ -205,7 +205,7 @@ const CreatePost = () => {
                                     </div>
                                     <div>
                                         <li>
-                                            <strong>
+                                            <strong style={{color:"#dc3545"}}>
                                                 Tell us about your place
                                             </strong>
                                             <p>
@@ -228,7 +228,7 @@ const CreatePost = () => {
                                     </div>
                                     <div>
                                         <li>
-                                            <strong>
+                                            <strong style={{color:"#dc3545"}}>
                                                 Make your rental home/room stand out
                                             </strong>
                                             <p>
@@ -249,7 +249,7 @@ const CreatePost = () => {
 
                                     <div>
                                         <li>
-                                            <strong>
+                                            <strong style={{color:"#dc3545"}}>
                                                 Finalize and post rentals
                                             </strong>
                                             <p>

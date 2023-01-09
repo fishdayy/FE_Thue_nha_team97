@@ -24,10 +24,11 @@ const EditPost = () => {
         (async () => {
             await dispatch(showHome(id))
         })()
-    }, [])
+    }, [id])
 
     let home = useSelector(state => {
-        return state.home.listHome[0]
+        console.log(state)
+        return state.home.detailHome[0]
     })
     console.log(home)
 

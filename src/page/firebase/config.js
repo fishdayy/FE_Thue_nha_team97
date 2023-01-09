@@ -15,15 +15,14 @@ import firebase from "firebase/app"
 //     appId: "1:630779913044:web:4574984594fc4c88835ec1"
 // };
 const firebaseConfig = {
-    apiKey: "AIzaSyDer281Xl5CXLv20ZjoPrt8WRrTksSD2iw",
-    authDomain: "thuenha-9803e.firebaseapp.com",
-    projectId: "thuenha-9803e",
-    storageBucket: "thuenha-9803e.appspot.com",
-    messagingSenderId: "695392567341",
-    appId: "1:695392567341:web:4eb87113f962b9f3da38a4",
-    measurementId: "G-GYF0ZHD3N0"
+    apiKey: "AIzaSyABTixStKNRN5EjVzjGDTPEa8ZLSQl5FdY",
+    authDomain: "apithuenha.firebaseapp.com",
+    projectId: "apithuenha",
+    storageBucket: "apithuenha.appspot.com",
+    messagingSenderId: "717189961210",
+    appId: "1:717189961210:web:efebcce73f67cedc188043",
+    measurementId: "G-VKP7T0K5R1"
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);

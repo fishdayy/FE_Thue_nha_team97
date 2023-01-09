@@ -20,6 +20,10 @@ const HomesByCategory = () => {
         </div>
         <div className="row">
             <div className="col-12">
+                <div>
+                    <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px",color:"#dc3545"}}>Discover more types of tourism</h2>
+                    <p style={{textAlign: "center", marginBottom: "30px"}}>Find unique travel experiences and explore regional cultures and countries through articles with Asahi Luxstay</p>
+                </div>
                 <div className="row p-3">
                     {dataHome.map(item => (
                         <div className="col-3 item-home">

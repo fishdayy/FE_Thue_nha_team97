@@ -112,12 +112,16 @@ const Search = () => {
                                 timeStart: `${date[0].startDate.getFullYear() + '-' + (date[0].startDate.getMonth() + 1) + '-' + date[0].startDate.getDate()}`,
                                 timeEnd: `${date[0].endDate.getFullYear() + '-' + (date[0].endDate.getMonth() + 1) + '-' + date[0].endDate.getDate()}`,
                             }
-                            dispatch(checkTimeHomesDays(data)).then((data) => {
-                                dispatch(showHomesByTime({homeIds: data.payload.homeId}))
-                            })
-                            navigate('/home/homes-find')
-                            dispatch(showHomesByAddress(values))
-                            resetForm()
+                            if (values.address === "" && values.bedroom === "" && values.bathroom === "") {
+                                dispatch(checkTimeHomesDays(data)).then((data) => {
+                                    dispatch(showHomesByTime({homeIds: data.payload.homeId}))
+                                    navigate('/home/homes-find')
+                                })
+                            } else {
+                                dispatch(showHomesByAddress(values))
+                                navigate('/home/homes-find')
+                                resetForm()
+                            }
                             setDate([
                                 {
                                     startDate: new Date(),

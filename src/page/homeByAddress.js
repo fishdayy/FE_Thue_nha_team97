@@ -7,6 +7,7 @@ import Banner from "../components/Banner";
 const HomesByAddress = () => {
 
     let dataHome = useSelector(state => {
+        console.log(state)
         return state.home.listHome
     })
 
@@ -16,6 +17,10 @@ const HomesByAddress = () => {
         </div>
         <div>
             <Search></Search>
+        </div>
+        <div>
+            <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px",color:"#dc3545"}}>Discover more types of tourism</h2>
+            <p style={{textAlign: "center", marginBottom: "30px"}}>Find unique travel experiences and explore regional cultures and countries through articles with Asahi Luxstay</p>
         </div>
         <div className="row">
             <div className="col-12">

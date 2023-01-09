@@ -28,7 +28,9 @@ const YourHomes = () => {
 
     return (<div>
         <div>
-            <Search></Search>
+            <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px",color:"#dc3545"}}>Manage your home information</h2>
+            <p style={{textAlign: "center", marginBottom: "30px"}}>Please update housing information accurately so that customers have the best experience at your home.</p>
+
         </div>
         <div className="row">
             <div className="col-12">

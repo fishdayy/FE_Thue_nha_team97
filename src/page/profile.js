@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import {storage} from "./firebase/config";
 
+const phoneRegExp = /^((84|0[3|5|7|8|9])+([0-9]{8})\b)?$/
+
 const InputSchema = Yup.object().shape({
     fullName: Yup.string()
         .min(3, "Too Short!")
@@ -18,9 +20,7 @@ const InputSchema = Yup.object().shape({
         .min(3, "Too Short!"),
     address: Yup.string()
         .min(3, "Too Short!"),
-    phone: Yup.string()
-        .min(10, "Too Short!")
-        .max(10, "Too Long"),
+    phone: Yup.string().matches(phoneRegExp, 'Phone number is not validate!'),
     email: Yup.string()
         .min(3, "Too Short!")
         .email("Not an Email!")
@@ -184,7 +184,6 @@ const Profile = () => {
                                                                     newPassword: values.newPassword
                                                                 }
                                                                 let check = await dispatch(changePassword(data))
-                                                                console.log(check)
                                                                 if (check.payload.user.check) {
                                                                     handleClose()
                                                                     resetForm()
@@ -323,7 +322,7 @@ const Profile = () => {
                                                 <div className="col-sm-3">
                                                     <h6 className="mb-0" style={{color: "red"}}>Phone</h6>
                                                 </div>
-                                                <Field type="number" className="col-sm-8 text-secondary" name="phone"
+                                                <Field type="text" className="col-sm-8 text-secondary" name="phone"
                                                        style={{borderRadius: "10px"}}
                                                        placeholder={user && user.userFind[0].phone}>
                                                 </Field>

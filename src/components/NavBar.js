@@ -32,7 +32,7 @@ const Navbar = () => {
                                             Post
                                         </a>
                                         <ul className="dropdown-menu">
-                                            <li><Link to={'/home/create'}><a className="dropdown-item" >Create</a></Link></li>
+                                            <li><Link to={'/home/create'}><a className="dropdown-item" >Create Posts</a></Link></li>
                                             <li>
                                                 <hr className="dropdown-divider"/>
                                             </li>

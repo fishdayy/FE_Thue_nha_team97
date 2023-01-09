@@ -11,7 +11,8 @@ import {
 
 const initialState = {
     listHome: [],
-    top4Home: []
+    detailHome: [],
+    top4Home: [],
 }
 const homeSlice = createSlice({
     name: 'home',
@@ -21,7 +22,7 @@ const homeSlice = createSlice({
             state.listHome = [...action.payload]
         })
         builder.addCase(showHome.fulfilled, (state, action) => {
-            state.listHome = [...action.payload]
+            state.detailHome = [...action.payload]
         })
         builder.addCase(showYourHomes.fulfilled, (state, action) => {
             console.log(action.payload)

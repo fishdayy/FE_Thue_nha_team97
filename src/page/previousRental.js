@@ -28,7 +28,7 @@ const HomeRental = () => {
 
     return (<div>
         <div className="row">
-            <h2 style={{textAlign: "center"}}>Trips</h2>
+            <h2 style={{textAlign: "center",color:"#dc3545"}}>Trips</h2>
             <p style={{textAlign: "center"}}>Time to dust off your bags and start planning your next adventure</p>
         </div>
         <div style={{backgroundColor: "white", marginTop: '10px'}}>
