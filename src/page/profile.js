@@ -184,7 +184,7 @@ const Profile = () => {
                                                                     newPassword: values.newPassword
                                                                 }
                                                                 let check = await dispatch(changePassword(data))
-                                                                if (check.payload.user.check) {
+                                                                if (check.payload.user.check === 1) {
                                                                     handleClose()
                                                                     resetForm()
                                                                     Swal.fire({
@@ -193,7 +193,17 @@ const Profile = () => {
                                                                         showConfirmButton: false,
                                                                         timer: 1500
                                                                     })
-                                                                } else {
+                                                                }
+                                                                if (check.payload.user.check === 0) {
+                                                                    resetForm()
+                                                                    Swal.fire({
+                                                                        title: 'Error!',
+                                                                        text: check.payload.mess,
+                                                                        icon: 'error',
+                                                                        confirmButtonText: 'Try Again'
+                                                                    })
+                                                                }
+                                                                if (check.payload.user.check === 2) {
                                                                     resetForm()
                                                                     Swal.fire({
                                                                         title: 'Error!',
@@ -207,7 +217,7 @@ const Profile = () => {
                                                     <Form>
                                                         <Field
                                                             name="oldPassword"
-                                                            type="text"
+                                                            type="password"
                                                             placeholder="Old Password"
                                                             style={{borderRadius: "10px"}}
                                                         />
@@ -215,7 +225,7 @@ const Profile = () => {
                                                                       style={{color: "red"}}></ErrorMessage>
                                                         <Field
                                                             name="newPassword"
-                                                            type="text"
+                                                            type="password"
                                                             placeholder="New Password"
                                                             style={{marginTop: "10px", borderRadius: "10px"}}
                                                         />
@@ -223,7 +233,7 @@ const Profile = () => {
                                                                       style={{color: "red"}}></ErrorMessage>
                                                         <Field
                                                             name="repeatNewPassword"
-                                                            type="text"
+                                                            type="password"
                                                             placeholder="Repeat New Password"
                                                             style={{marginTop: "10px", borderRadius: "10px"}}
                                                         />
@@ -260,7 +270,7 @@ const Profile = () => {
                                         email: "",
                                         avatar: urls[urls.length - 1]
                                     }} onSubmit={(values) => {
-                                        if  (values.fullName === "") {
+                                        if (values.fullName === "") {
                                             values.fullName = user && user.userFind[0].fullName
                                         }
                                         if (values.job === "") {
@@ -283,7 +293,7 @@ const Profile = () => {
                                             newPhone: values.phone,
                                             newAddress: values.address,
                                             newEmail: values.email,
-                                            newAvatar:urls[urls.length-1]
+                                            newAvatar: urls[urls.length - 1]
                                         }
                                         dispatch(updateProfile(data))
                                         Swal.fire({

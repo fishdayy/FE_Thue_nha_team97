@@ -19,20 +19,13 @@ const Search = () => {
     const navigate = useNavigate()
 
     const [openDate, setOpenDate] = useState(false)
-    const [date, setDate] = useState([
-        {
-            startDate: new Date(),
-            endDate: new Date(),
-            key: "selection"
-        }
-    ]);
+    const [date, setDate] = useState([{
+        startDate: new Date(), endDate: new Date(), key: "selection"
+    }]);
     const [openOption, setOpenOption] = useState(false)
-    const [options, setOptions] = useState(
-        {
-            bathroom: 1,
-            bedroom: 1,
-        }
-    );
+    const [options, setOptions] = useState({
+        bathroom: 1, bedroom: 1,
+    });
 
     //
     const dataCategory = useSelector(state => {
@@ -43,14 +36,13 @@ const Search = () => {
         dispatch(showCategories())
     }, [])
 
-    return (
-        <div className="container"
-             style={{
-                 borderRadius: "25px",
-                 boxShadow: "0px 1px 25px 0px rgba(193,193,193,1)",
-                 marginBottom: "50px",
-                 height: "130px"
-             }}>
+    return (<div className="container"
+                 style={{
+                     borderRadius: "25px",
+                     boxShadow: "0px 1px 25px 0px rgba(193,193,193,1)",
+                     marginBottom: "50px",
+                     height: "130px"
+                 }}>
             <ul className="nav nav-pills mb-3  nav-pills-flex">
                 <li className="nav-item" role="presentation" style={{marginTop: "10px"}}>
                     <button className="nav-link pills-home-tab" id="pills-home-tab" data-bs-toggle="#pills-home"
@@ -59,9 +51,7 @@ const Search = () => {
                             <i className="fa-solid fa-home" style={{color: "black", padding: "0 10px"}}></i>
                             <div className="nav-link-strong">
                                 <strong style={{color: "black"}} onClick={() => {
-                                    if (dataCategory.length > 0)
-                                        dispatch(showHomesByCategory(dataCategory[0].id))
-                                    navigate('/home/homes-by-category')
+                                    if (dataCategory.length > 0) dispatch(showHomesByCategory(dataCategory[0].id))
                                 }}>
                                     {dataCategory[0] && dataCategory[0].name}
                                 </strong>
@@ -76,9 +66,7 @@ const Search = () => {
                             <i className="fa-solid fa-dungeon" style={{color: "black", padding: "0 10px"}}></i>
                             <div className="nav-link-strong">
                                 <strong style={{color: "black"}} onClick={() => {
-                                    if (dataCategory.length > 0)
-                                        dispatch(showHomesByCategory(dataCategory[1].id))
-                                    navigate('/home/homes-by-category')
+                                    if (dataCategory.length > 0) dispatch(showHomesByCategory(dataCategory[1].id))
                                 }}>
                                     {dataCategory[1] && dataCategory[1].name}
                                 </strong>
@@ -93,9 +81,7 @@ const Search = () => {
                             <i className="fa-solid fa-hotel" style={{color: "black", padding: "0 10px"}}></i>
                             <div className="nav-link-strong">
                                 <strong style={{color: "black"}} onClick={() => {
-                                    if (dataCategory.length > 0)
-                                        dispatch(showHomesByCategory(dataCategory[2].id))
-                                    navigate('/home/homes-by-category')
+                                    if (dataCategory.length > 0) dispatch(showHomesByCategory(dataCategory[2].id))
                                 }}>
                                     {dataCategory[2] && dataCategory[2].name}
                                 </strong>
@@ -115,20 +101,14 @@ const Search = () => {
                             if (values.address === "" && values.bedroom === "" && values.bathroom === "") {
                                 dispatch(checkTimeHomesDays(data)).then((data) => {
                                     dispatch(showHomesByTime({homeIds: data.payload.homeId}))
-                                    navigate('/home/homes-find')
                                 })
                             } else {
                                 dispatch(showHomesByAddress(values))
-                                navigate('/home/homes-find')
                                 resetForm()
                             }
-                            setDate([
-                                {
-                                    startDate: new Date(),
-                                    endDate: new Date(),
-                                    key: "selection"
-                                }
-                            ])
+                            setDate([{
+                                startDate: new Date(), endDate: new Date(), key: "selection"
+                            }])
                             setOpenDate(false)
                         }}>
                     <Form className="nav nav-pills mb-3  nav-pills-flex" style={{width: "100%"}}>
@@ -164,8 +144,7 @@ const Search = () => {
                                         setDate([item.selection])
                                     } else {
                                         Swal.fire({
-                                            icon: 'error',
-                                            title: "Can't choose this date!",
+                                            icon: 'error', title: "Can't choose this date!",
                                         })
                                     }
                                 }}
@@ -213,7 +192,6 @@ const Search = () => {
                     </Form>
                 </Formik>
             </ul>
-        </div>
-    )
+        </div>)
 }
 export default Search;

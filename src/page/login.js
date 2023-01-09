@@ -50,8 +50,8 @@ const Login = () => {
     }
 
     return (<>
-        <div className="veen" id="background">
-            <div className="wrapper">
+        <div className="veen" id="background" style={{borderRadius:"10px"}}>
+            <div className="wrapper" style={{borderRadius:"10px"}}>
                 <Formik
                     validationSchema={InputSchema}
                     initialValues={{
@@ -61,15 +61,15 @@ const Login = () => {
                         handleLogin(values)
                         resetForm()
                     }}>
-                    <Form id="login" tabIndex="500">
+                    <Form id="login" tabIndex="500" >
                         <h3 >Login</h3>
                         <div className="mail" style={{display: "flex"}}>
-                            <Field type="text" name={'username'}/>
+                            <Field type="text" name={'username'} style={{borderRadius:"10px"}}/>
                             <ErrorMessage name="username" component="div" style={{color: "red"}}></ErrorMessage>
                             <label>Mail or Username</label>
                         </div>
                         <div className="passwd" style={{display: "flex"}}>
-                            <Field name={'password'} type="password"/>
+                            <Field name={'password'} type="password" style={{borderRadius:"10px"}}/>
                             <ErrorMessage name="password" component="div" style={{color: "red"}}></ErrorMessage>
                             <label>Password</label>
                         </div>
@@ -78,9 +78,9 @@ const Login = () => {
                         </div>
                     </Form>
                 </Formik>
-                <div>
-                    <LoginWithFb></LoginWithFb>
-                </div>
+                {/*<div>*/}
+                {/*    <LoginWithFb></LoginWithFb>*/}
+                {/*</div>*/}
                 <div className="submit">
                     <p style={{marginBottom:"10px",marginTop:"10px"}}>Don't have an account?</p>
                     <Link to={'/register'}>

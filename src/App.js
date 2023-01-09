@@ -7,12 +7,9 @@ import './App.css';
 import ListHome from "./page/listHomes";
 import Detail from "./page/detail";
 import YourHomes from "./page/yourHomes";
-import HomesByCategory from "./page/homesByCategory";
-import HomesByAddress from "./page/homeByAddress";
 import CreatePost from "./page/create";
 import Profile from "./page/profile";
 import History from "./page/history";
-import PreviousRental from "./page/previousRental";
 import EditPost from "./page/editPost";
 import HomeRental from "./page/previousRental";
 
@@ -34,8 +31,6 @@ function App() {
                         <Route path={'detail/:id'} element={<Detail></Detail>}></Route>
                         <Route path={'create'} element={<CreatePost/>}></Route>
                         <Route path={'your-homes'} element={<YourHomes></YourHomes>}></Route>
-                        <Route path={'homes-by-category'} element={<HomesByCategory></HomesByCategory>}></Route>
-                        <Route path={'homes-find'} element={<HomesByAddress></HomesByAddress>}></Route>
                         <Route path={'edit/:id'} element={<EditPost></EditPost>}></Route>
                     </Route>
                     :

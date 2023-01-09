@@ -3,7 +3,7 @@ import './CSS/create.css';
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-import {createHome, editHome, showHome} from "../service/homeService";
+import {editHome, showHome} from "../service/homeService";
 import React, {useEffect, useState} from "react";
 import {storage} from "./firebase/config";
 import {
@@ -30,7 +30,6 @@ const EditPost = () => {
         console.log(state)
         return state.home.detailHome[0]
     })
-    console.log(home)
 
     const handleSubmit = async (values) => {
         let avatar = urls[0]
@@ -146,23 +145,23 @@ const EditPost = () => {
                             <Form id="createPost" tabIndex="500">
                                 <h3 style={{color: "#dc3545"}}>Edit Post Rent Home</h3>
                                 <div className="name" style={{display: "flex"}}>
-                                    <Field type="text" name="name" placeholder={home && home.name}/>
+                                    <Field type="text" name="name" placeholder={home && home.name} style={{borderRadius:"10px"}}/>
                                     <label>Name</label>
                                 </div>
                                 <div className="address" style={{display: "flex"}}>
-                                    <Field type="text" name="address" placeholder={home && home.address}/>
+                                    <Field type="text" name="address" placeholder={home && home.address} style={{borderRadius:"10px"}}/>
                                     <label>Address</label>
                                 </div>
                                 <div className="Price" style={{display: "flex"}}>
-                                    <Field type="number" name="price" placeholder={home && home.price}/>
+                                    <Field type="number" name="price" placeholder={home && home.price} style={{borderRadius:"10px"}}/>
                                     <label>Price</label>
                                 </div>
                                 <div className="description" style={{display: "flex"}}>
-                                    <Field style={{height: "200px"}} name="description" placeholder={home &&home.description}/>
+                                    <Field style={{height: "200px",borderRadius:"10px"}} name="description" placeholder={home &&home.description} />
                                     <label>Description</label>
                                 </div>
                                 <div className="category" style={{display: "flex"}}>
-                                    <Field as={"select"} name={"categoryId"}>
+                                    <Field as={"select"} name={"categoryId"} style={{borderRadius:"10px"}}>
                                         <option value="">{home &&home.category}</option>
                                         <option value="1">House</option>
                                         <option value="2">Homestay</option>
@@ -171,7 +170,7 @@ const EditPost = () => {
                                     <label>Category</label>
                                 </div>
                                 <div className="bedroom" style={{display: "flex"}}>
-                                    <Field as={"select"} name={"bedroom"}>
+                                    <Field as={"select"} name={"bedroom"} style={{borderRadius:"10px"}}>
                                         <option value="">{home &&home.bedroom}</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -180,7 +179,7 @@ const EditPost = () => {
                                     <label>Bedroom</label>
                                 </div>
                                 <div className="bathroom" style={{display: "flex"}}>
-                                    <Field as={"select"} name={"bathroom"}>
+                                    <Field as={"select"} name={"bathroom"} style={{borderRadius:"10px"}}>
                                         <option value="">{home &&home.bathroom}</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -188,7 +187,7 @@ const EditPost = () => {
                                     </Field>
                                     <label>Bathroom</label>
                                 </div>
-                                <div className="submit" style={{border: "1px solid #999"}}>
+                                <div className="submit" style={{border: "1px solid #999",borderRadius:"10px"}}>
                                     <button className="dark">Submit</button>
                                 </div>
                             </Form>

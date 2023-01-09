@@ -121,28 +121,28 @@ const CreatePost = () => {
                             <Form id="createPost" tabIndex="500">
                                 <h3 style={{color: "#dc3545"}}>Create Post Rent Home</h3>
                                 <div className="name" style={{display: "flex"}}>
-                                    <Field type="text" name="name"/>
+                                    <Field type="text" name="name" style={{borderRadius:"10px"}}/>
                                     <ErrorMessage name="name" component="div" style={{color: "red"}}></ErrorMessage>
                                     <label>Name</label>
                                 </div>
                                 <div className="address" style={{display: "flex"}}>
-                                    <Field type="text" name="address"/>
+                                    <Field type="text" name="address" style={{borderRadius:"10px"}}/>
                                     <ErrorMessage name="address" component="div" style={{color: "red"}}></ErrorMessage>
                                     <label>Address</label>
                                 </div>
                                 <div className="Price" style={{display: "flex"}}>
-                                    <Field type="number" name="price"/>
+                                    <Field type="number" name="price" style={{borderRadius:"10px"}}/>
                                     <ErrorMessage name="price" component="div" style={{color: "red"}}></ErrorMessage>
                                     <label>Price</label>
                                 </div>
                                 <div className="description" style={{display: "flex"}}>
-                                    <Field style={{height: "200px"}} name="description"/>
+                                    <Field style={{height: "200px"}} name="description" style={{borderRadius:"10px"}}/>
                                     <ErrorMessage name="description" component="div"
                                                   style={{color: "red"}}></ErrorMessage>
                                     <label>Description</label>
                                 </div>
                                 <div className="category" style={{display: "flex"}}>
-                                    <Field as={"select"} name={"categoryId"}>
+                                    <Field as={"select"} name={"categoryId"} style={{borderRadius:"10px"}}>
                                         <option value="">Category</option>
                                         <option value="1">House</option>
                                         <option value="2">Homestay</option>
@@ -153,7 +153,7 @@ const CreatePost = () => {
                                     <label>Category</label>
                                 </div>
                                 <div className="bedroom" style={{display: "flex"}}>
-                                    <Field as={"select"} name={"bedroom"}>
+                                    <Field as={"select"} name={"bedroom"} style={{borderRadius:"10px"}}>
                                         <option value="">Bedroom</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -163,7 +163,7 @@ const CreatePost = () => {
                                     <label>Bedroom</label>
                                 </div>
                                 <div className="bathroom" style={{display: "flex"}}>
-                                    <Field as={"select"} name={"bathroom"}>
+                                    <Field as={"select"} name={"bathroom"} style={{borderRadius:"10px"}}>
                                         <option value="">Bathroom</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -172,19 +172,20 @@ const CreatePost = () => {
                                     <ErrorMessage name="bathroom" component="div" style={{color: "red"}}></ErrorMessage>
                                     <label>Bathroom</label>
                                 </div>
-                                <div className="submit" style={{border: "1px solid #999"}}>
+                                <div className="submit" style={{border: "1px solid #999",borderRadius:"10px"}}>
                                     <button className="dark">Submit</button>
                                 </div>
                             </Form>
                         </Formik>
                         <br/>
-                        <div className="divImg" style={{display: "flex"}} tabIndex="500">
+                        <div className="divImg" style={{display: "flex",borderRadius:"10px"}} tabIndex="500">
                             <input className="inputImg" style={{
                                 position: "relative",
                                 bottom: '119px',
                                 width: '70%',
                                 border: 'none',
-                                left: "5%"
+                                left: "5%",
+                                borderRadius:"10px"
                             }}
                                    type="file" multiple onChange={handleChange}/>
                             <button style={{color: 'red', position: 'relative', bottom: '7.5rem', right: '1%'}}

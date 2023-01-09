@@ -47,8 +47,8 @@ const Register = () => {
         }
     }
     return (<div>
-        <div className="veen" id="background">
-            <div className="wrapper">
+        <div className="veen" id="background" style={{borderRadius:"10px"}}>
+            <div className="wrapper" style={{borderRadius:"10px"}}>
                 <Formik
                     validationSchema={InputSchema}
                     initialValues={{
@@ -62,12 +62,12 @@ const Register = () => {
                     <Form id="login" tabIndex="500">
                         <h3>Register</h3>
                         <div className="mail" style={{display: "flex"}}>
-                            <Field name={'username'} type="text"/>
+                            <Field name={'username'} type="text" style={{borderRadius:"10px"}}/>
                             <ErrorMessage name="username" component="div" style={{color: "red"}}></ErrorMessage>
                             <label>Mail or Username</label>
                         </div>
                         <div className="passwd" style={{display: "flex"}}>
-                            <Field name={'password'} type="password"/>
+                            <Field name={'password'} type="password" style={{borderRadius:"10px"}}/>
                             <ErrorMessage name="password" component="div" style={{color: "red"}}></ErrorMessage>
                             <label>Password</label>
                         </div>
