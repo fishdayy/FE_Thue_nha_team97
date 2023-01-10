@@ -4,7 +4,6 @@ import {useEffect} from "react";
 import {showHomesByAddress, showHomesByCategory, showHomesByTime, showListHome} from "../service/homeService";
 import {showCategories} from "../service/categoryService";
 import {Field, Form, Formik} from "formik";
-import {useNavigate} from "react-router-dom";
 import {useState} from 'react'
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -16,7 +15,6 @@ import {checkTimeHomesDays} from "../service/homesDaysService";
 
 const Search = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const [openDate, setOpenDate] = useState(false)
     const [date, setDate] = useState([{

@@ -5,6 +5,7 @@ import imageSlice from "./imageRedux/imageSlice";
 import categorySlice from "./categoryRedux/categorySlice";
 import contractSlice from "./contractRedux/contractSlice";
 import homesDaysSlice from "./homesDaysRedux/homesDaysSlice";
+import repairTimesSlice from "./repairTimesRedux/repairTimesSlice";
 
 const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
         image: imageSlice,
         category: categorySlice,
         contract: contractSlice,
-        homesDays: homesDaysSlice
+        homesDays: homesDaysSlice,
+        repairTimes: repairTimesSlice
     },
 })
 export default store

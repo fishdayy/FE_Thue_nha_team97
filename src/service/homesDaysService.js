@@ -29,8 +29,16 @@ export const checkTimeHomesDays = createAsyncThunk(
 export const removeHomesDays = createAsyncThunk(
     'homesDays/removeHomesDays',
     async (id) => {
-        console.log(id)
         let res = await axios.delete('http://localhost:8080/homes-days/' + id)
+        return res.data
+    }
+)
+
+export const removeHomesDays2 = createAsyncThunk(
+    'homesDays/removeHomesDays2',
+    async (id) => {
+        console.log(id)
+        let res = await axios.delete('http://localhost:8080/homes-days/remove/' + id)
         return res.data
     }
 )

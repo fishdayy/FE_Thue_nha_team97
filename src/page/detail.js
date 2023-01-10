@@ -130,7 +130,8 @@ const Detail = () => {
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Someone booked this day!',
+                    title: "Can't booking!",
+                    text: 'Someone set this date or the house is under repair!'
                 })
             }
         })

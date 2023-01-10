@@ -25,7 +25,6 @@ const homeSlice = createSlice({
             state.detailHome = [...action.payload]
         })
         builder.addCase(showYourHomes.fulfilled, (state, action) => {
-            console.log(action.payload)
             state.listHome = [...action.payload]
         })
         builder.addCase(showHomesByCategory.fulfilled, (state, action) => {
@@ -39,9 +38,6 @@ const homeSlice = createSlice({
         })
         builder.addCase(removeHome.fulfilled, (state, action) => {
             state.listHome = state.listHome.filter(item => item.id !== action.payload.id)
-        })
-        builder.addCase(changeStatus.fulfilled, (state, action) => {
-            state.listHome = [...action.payload]
         })
         builder.addCase(showTop4.fulfilled, (state, action) => {
             state.top4Home = [...action.payload]

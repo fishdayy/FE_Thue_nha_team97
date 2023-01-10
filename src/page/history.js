@@ -87,7 +87,7 @@ const History = () => {
                                                             reverseButtons: true
                                                         }).then((result) => {
                                                             if (result.isConfirmed) {
-                                                                swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted.', 'success', dispatch(removeContract(item.id)).then((res) => {
+                                                                swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted!', 'success', dispatch(removeContract(item.id)).then((res) => {
                                                                     dispatch(removeHomesDays(res.payload.idContract))
                                                                 }))
                                                             } else if (/* Read more about handling dismissals below */
