@@ -1,4 +1,4 @@
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
 import Login from "./page/login";
 import {useSelector} from "react-redux";
 import Register from "./page/register";
@@ -12,11 +12,18 @@ import Profile from "./page/profile";
 import History from "./page/history";
 import EditPost from "./page/editPost";
 import HomeRental from "./page/previousRental";
+import HomeByCategory from "./page/homeByCategory";
+import HomeBySearch from "./page/homeBySearch";
+import {useEffect} from "react";
 
 function App() {
+    let location = useLocation();
     let dataUser = useSelector(state => {
         return state.user.userNow
     })
+    useEffect(()=> {
+        window.scrollTo(0 , 0)
+    }, [location.pathname])
     return (
         <Routes>
             <Route path={'/register'} element={<Register/>}></Route>
@@ -25,6 +32,8 @@ function App() {
                 dataUser != null ?
                     <Route path={'/home'} element={<Home/>}>
                         <Route path={'/home'} element={<ListHome/>}></Route>
+                        <Route path={'by-category'} element={<HomeByCategory/>}></Route>
+                        <Route path={'by-search'} element={<HomeBySearch/>}></Route>
                         <Route path={'previous-rental-history'} element={<History/>}></Route>
                         <Route path={'home-rental-history'} element={<HomeRental/>}></Route>
                         <Route path={'profile'} element={<Profile/>}></Route>

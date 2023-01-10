@@ -121,7 +121,7 @@ const YourHomes = () => {
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div style={{marginBottom:"6px"}}>
                             <strong style={{textAlign: "left"}}>{item.name}</strong>
                             <p style={{fontWeight: "200", textAlign: "left", marginBottom: "0"}}>{item.address}</p>
                             <strong style={{textAlign: "left"}}>{item.price}$<label
@@ -157,7 +157,7 @@ const YourHomes = () => {
                                         borderRadius: "10px",
                                         marginRight: "10px",
                                         borderColor: "#dc3545"
-                                    }}>Delete
+                                    }}><i className="fa-solid fa-trash-can"></i>
                             </button>
                             <Link to={`/home/edit/${item.id}`}>
                                 <button className="btn btn-info "
@@ -166,7 +166,7 @@ const YourHomes = () => {
                                             color: "white",
                                             borderRadius: "10px",
                                             borderColor: "#dc3545"
-                                        }}>Edit
+                                        }}><i className="fa-solid fa-pen-to-square"></i>
                                 </button>
                             </Link>
                             <button onClick={() => {
@@ -180,7 +180,7 @@ const YourHomes = () => {
                                         borderRadius: "10px",
                                         borderColor: "#dc3545",
                                         marginLeft: "10px"
-                                    }}>Repair
+                                    }}><i className="fa-solid fa-screwdriver-wrench"></i>
                             </button>
                             <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
@@ -244,7 +244,7 @@ const YourHomes = () => {
                                         borderRadius: "10px",
                                         marginLeft: "10px",
                                         borderColor: "#dc3545"
-                                    }}>Change
+                                    }}><i className="fa-solid fa-arrows-rotate"></i>
                             </button>
                             <Modal show={show2} onHide={handleClose2}>
                                 <Modal.Header closeButton>

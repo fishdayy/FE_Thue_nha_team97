@@ -8,7 +8,7 @@ const Navbar = () => {
         return state.user.userNow.user.userFind[0]
     })
     return (
-        <div style={{backgroundColor:"white"}}>
+        <div style={{backgroundColor:"white", position: "fixed", top: "0", left: "0", minWidth: "100vw",zIndex:"2"}}>
             <div className='row' style={{backgroundColor:"white"}}>
                 <div className='col-12' style={{backgroundColor:"white"}}>
                     <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{backgroundColor:"white"}}>

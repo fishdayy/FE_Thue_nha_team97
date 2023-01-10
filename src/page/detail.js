@@ -11,11 +11,20 @@ import {DateRange} from "react-date-range";
 import Swal from "sweetalert2";
 import {createContract} from "../service/contractService";
 import {checkHomesDays, createHomesDays} from "../service/homesDaysService";
-import {geocodeByAddress, getLatLng} from "react-google-places-autocomplete";
 import GoogleMapReact from "google-map-react";
 import icons from "./icon";
 import {createComment, showComment} from "../service/commentService";
-import {Field, Form, Formik} from "formik";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as Yup from "yup";
+import Rating from '@mui/material/Rating';
+import Typography from '@mui/material/Typography';
+import {Avatar} from "@mui/material";
+import "../page/CSS/comment.css"
+
+const InputSchema = Yup.object().shape({
+    comment: Yup.string()
+        .required("Please Enter Comment!"),
+})
 
 const AnyReactComponent = ({text}) => <div>{text}</div>;
 const {HiLocationMarker} = icons;
@@ -82,14 +91,13 @@ const Detail = () => {
         return state.comment.listComment
     })
 
-    console.log(dataHome)
     useEffect(() => {
         (async () => {
             await dispatch(showHome(id))
             await dispatch(showImagesByHomeId(id))
             await dispatch(showComment(id))
         })()
-    }, [])
+    }, [comment.length])
 
     const getNumberRentDay = () => {
         const get_day_of_time = (d1, d2) => {
@@ -147,6 +155,8 @@ const Detail = () => {
             }
         })
     }
+
+    const [star, setStar] = React.useState(1);
 
     return (
         <div>
@@ -321,43 +331,91 @@ const Detail = () => {
                             </div>
                         </div>
                     </div>
-                    <strong>Comment</strong>
-                    <br/>
-                    {comment && comment.map(item=>(
-                        <>{item.username}:{item.comment}</>
-                    ))}
+
+                    {/*<div style={{height: '500px', width: '100%'}}>*/}
+                    {/*    <GoogleMapReact*/}
+                    {/*        bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}*/}
+                    {/*        defaultCenter={coords}*/}
+                    {/*        defaultZoom={11}*/}
+                    {/*        center={coords}*/}
+                    {/*    >*/}
+                    {/*        <AnyReactComponent*/}
+                    {/*            lat={coords?.lat}*/}
+                    {/*            lng={coords?.lng}*/}
+                    {/*            text={<HiLocationMarker color={"red"} size={24}/>}*/}
+                    {/*        />*/}
+                    {/*    </GoogleMapReact>*/}
+                    {/*</div>*/}
+                    {/*<div className="comment" style={{marginTop: "20px"}}>*/}
+                    {/*</div>*/}
                     <>
-                        <Formik initialValues={{
-                            userId:user.id,
-                            homeId:id,
-                            comment:""
-                        }} onSubmit={(values)=>dispatch(createComment(values)).then(e=>{
-                            console.log(e)
-                        })}>
-                            <Form>
-                                <Field name={'comment'} type={'text'}></Field>
-                                <button>Comment</button>
-                            </Form>
-                        </Formik>
+                        <div className="card">
+                            <div className="row">
+                                <div className="col-1">
+                                    <img src={user.avatar} className="rounded-circle mt-2" style={{height:"100px",width:"100px"}}/>
+                                </div>
+                                <div className="col-11">
+                                    <div className="comment-box ml-2">
+                                        <h5>Add a comment</h5>
+                                        <Formik validationSchema={InputSchema} initialValues={{
+                                            userId: user.id,
+                                            homeId: id,
+                                            comment: ""
+                                        }} onSubmit={(values, {resetForm}) => {
+                                            dispatch(createComment(values))
+                                            resetForm()
+                                        }}>
+                                            <Form>
+                                        <div className="rating">
+                                            <Typography component="legend"></Typography>
+                                            <Rating
+                                                name="simple-controlled"
+                                                star={star}
+                                                onChange={(event, newValue) => {
+                                                    setStar(newValue);
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="comment-area">
+                                        <Field name={'comment'} type={'text'} style={{resize:"none"}} className="form-control" placeholder="what is your view?"
+                                                  rows="4"></Field>
+                                            <ErrorMessage name="comment" component="div"
+                                                          style={{color: "red"}}></ErrorMessage>
+                                        </div>
+                                        <div className="comment-btns mt-2">
+                                            <div className="row">
+                                                <div className="col-2">
+                                                    <div className="pull-right">
+                                                        <button className="btn btn-success send btn-sm">Send <i
+                                                            className="fa fa-long-arrow-right ml-1"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            </Form>
+                                        </Formik>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {comment && comment.map(item => (
+                            <div className="card p-3">
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div className="user d-flex flex-row align-items-center">
+                                        <Avatar alt="Remy Sharp" src={item.avatar} style={{marginRight:"10px"}}/>
+                                        <span><small className="font-weight-bold text-primary">{item.username}</small> <small
+                                            className="font-weight-bold">{item.comment}</small></span><br/>
+                                    </div>
+                                    <div className="action d-flex justify-content-between mt-2 align-items-center">
+                                        <div className="icons align-items-center">
+                                            <i className="fa fa-star text-warning"></i>
+                                            <i className="fa fa-check-circle-o check-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </>
-                    <br/>
-                    <strong className="col-12">Map</strong>
-                    <div style={{height: '500px', width: '100%'}}>
-                        <GoogleMapReact
-                            bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
-                            defaultCenter={coords}
-                            defaultZoom={11}
-                            center={coords}
-                        >
-                            <AnyReactComponent
-                                lat={coords?.lat}
-                                lng={coords?.lng}
-                                text={<HiLocationMarker color={"red"} size={24}/>}
-                            />
-                        </GoogleMapReact>
-                    </div>
-                    <div className="comment" style={{marginTop: "20px"}}>
-                    </div>
                 </div>
             </div>
         </div>)
