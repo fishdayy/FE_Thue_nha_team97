@@ -14,6 +14,8 @@ import {checkHomesDays, createHomesDays} from "../service/homesDaysService";
 import {geocodeByAddress, getLatLng} from "react-google-places-autocomplete";
 import GoogleMapReact from "google-map-react";
 import icons from "./icon";
+import {createComment, showComment} from "../service/commentService";
+import {Field, Form, Formik} from "formik";
 
 const AnyReactComponent = ({text}) => <div>{text}</div>;
 const {HiLocationMarker} = icons;
@@ -25,14 +27,18 @@ const Detail = () => {
         return state.home.listHome[0]
     });
     useEffect(() => {
-        console.log(1)
         navigator.geolocation.getCurrentPosition(({coords: {longitude, latitude}}) => {
             setCoords({lat: latitude, lng: longitude})
         })
     }, [])
     // useEffect(() => {
     //     const getCoords = async () => {
-    //         const result = await geocodeByAddress(address.address)
+    //         console.log(1)
+    //         const result = await geocodeByAddress("Tu Ky, Hai Duong").then((data)=>{
+    //             console.log(data)
+    //         }).catch((e)=>{
+    //             console.log(e)
+    //         })
     //         const latLng = await getLatLng(result[0])
     //         setCoords(latLng)
     //     }
@@ -72,11 +78,16 @@ const Detail = () => {
         return state.home.detailHome
     })
 
+    let comment = useSelector(state => {
+        return state.comment.listComment
+    })
 
+    console.log(dataHome)
     useEffect(() => {
         (async () => {
             await dispatch(showHome(id))
             await dispatch(showImagesByHomeId(id))
+            await dispatch(showComment(id))
         })()
     }, [])
 
@@ -115,9 +126,9 @@ const Detail = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         swalWithBootstrapButtons.fire('Successful', 'You have booked!', 'success',
-                            dispatch(createContract(data)).then((res)=>{
+                            dispatch(createContract(data)).then((res) => {
                                 let idContract = res.payload.idContract
-                                let newData = {...data,idContract}
+                                let newData = {...data, idContract}
                                 dispatch(createHomesDays(newData))
                             }),
                             navigate('/home')
@@ -137,199 +148,219 @@ const Detail = () => {
         })
     }
 
-    return (<div>
-        <div className="row" id="imageDetail" style={{display: "flex"}}>
-            <div style={{float: "left"}} className="col-12">
+    return (
+        <div>
+            <div className="row" id="imageDetail" style={{display: "flex"}}>
+                <div style={{float: "left"}} className="col-12">
 
-                {dataImage.slice(0, 3).map((item, index) => {
-                    return (<img src={item.image} className="col-4"
-                                 width="100%" height="278px"
-                    />)
-                })}
+                    {dataImage.slice(0, 3).map((item, index) => {
+                        return (<img src={item.image} className="col-4"
+                                     width="100%" height="278px"
+                        />)
+                    })}
+                </div>
             </div>
-        </div>
-        <div className="gray-simple pt-4">
-            <div className="container-fluid container-fluid-tab"
-                 style={{
-                     backgroundColor: "transparent", display: "flex", float: "left",
-                 }}>
-                <div className="container" id="overview">
-                    <div className="row" style={{background: "#fff", margin: "0", display: "flex"}}>
-                        <div className="col-md-8" style={{boxSizing: "border-box", display: "block", width: "70%"}}>
-                            <ul className="flex-tab" style={{width: "60%"}}>
-                                <li><a href="" className="overview1 active_1-1"
-                                       style={{color: "rgb(57, 70, 109)"}}>Overview</a></li>
-                                <li><a href="" style={{color: "rgb(57, 70, 109)"}}>Photo library</a></li>
-                                <li><a href="" style={{color: "rgb(57, 70, 109)"}}>Evaluate</a></li>
-                            </ul>
-                        </div>
-                        <div className="col-md-4" style={{width: "30%"}}>
-                            <div className="flex-tab-color-price">
-                                <strong>From <small>{dataHome[0] && dataHome[0].price}<sup>$</sup> /
-                                    Day</small></strong>
-                                <Button variant="primary"
-                                        style={{backgroundColor: "#dc3545", borderColor: "#dc3545"}}
-                                        onClick={() => {
-                                            if (dataHome[0] && dataHome[0].userId === userId) {
-                                                Swal.fire({
-                                                    icon: 'error',
-                                                    title: 'This is your home!',
-                                                })
-                                            } else {
-                                                if (user.fullName === 'Your Name') {
+            <div className="gray-simple pt-4">
+                <div className="container-fluid container-fluid-tab"
+                     style={{
+                         backgroundColor: "transparent", display: "flex", float: "left",
+                     }}>
+                    <div className="container" id="overview">
+                        <div className="row" style={{background: "#fff", margin: "0", display: "flex"}}>
+                            <div className="col-md-8" style={{boxSizing: "border-box", display: "block", width: "70%"}}>
+                                <ul className="flex-tab" style={{width: "60%"}}>
+                                    <li><a href="" className="overview1 active_1-1"
+                                           style={{color: "rgb(57, 70, 109)"}}>Overview</a></li>
+                                    <li><a href="" style={{color: "rgb(57, 70, 109)"}}>Photo library</a></li>
+                                    <li><a href="" style={{color: "rgb(57, 70, 109)"}}>Evaluate</a></li>
+                                </ul>
+                            </div>
+                            <div className="col-md-4" style={{width: "30%"}}>
+                                <div className="flex-tab-color-price">
+                                    <strong>From <small>{dataHome[0] && dataHome[0].price}<sup>$</sup> /
+                                        Day</small></strong>
+                                    <Button variant="primary"
+                                            style={{backgroundColor: "#dc3545", borderColor: "#dc3545"}}
+                                            onClick={() => {
+                                                if (dataHome[0] && dataHome[0].userId === userId) {
                                                     Swal.fire({
                                                         icon: 'error',
-                                                        title: 'Please update your profile!',
-                                                        showConfirmButton: false,
-                                                        timer: 2000
+                                                        title: 'This is your home!',
                                                     })
-                                                    setTimeout(() => {
-                                                        clearTimeout()
-                                                        navigate('/home/profile')
-                                                    }, 2000)
                                                 } else {
-                                                    handleShow()
+                                                    if (user.fullName === 'Your Name') {
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'Please update your profile!',
+                                                            showConfirmButton: false,
+                                                            timer: 2000
+                                                        })
+                                                        setTimeout(() => {
+                                                            clearTimeout()
+                                                            navigate('/home/profile')
+                                                        }, 2000)
+                                                    } else {
+                                                        handleShow()
+                                                    }
                                                 }
-                                            }
-                                        }}>
-                                    Booking
-                                </Button>
-                                <Modal show={show} onHide={handleClose}>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>Choose Date</Modal.Title>
-                                    </Modal.Header>
-                                    <div style={{float: "left"}}>
-                                        <Modal.Body>
-                                            <div style={{
-                                                display: "flex",
-                                                width: "100%",
-                                                height: "50px",
-                                                alignItems: "center",
-                                                border: "1px solid",
-                                                marginRight: "1%",
-                                                borderRadius: "5px"
                                             }}>
-                                                <i className="fa-solid fa-calendar-days"
-                                                   style={{padding: "0 10px"}}></i>
-                                                <span onClick={() => setOpenDate(!openDate)} className="text-search"
-                                                      style={{marginRight: "10px"}}>{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(date[0].endDate, "MM/dd/yyyy")}`}</span>
+                                        Booking
+                                    </Button>
+                                    <Modal show={show} onHide={handleClose}>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title>Choose Date</Modal.Title>
+                                        </Modal.Header>
+                                        <div style={{float: "left"}}>
+                                            <Modal.Body>
+                                                <div style={{
+                                                    display: "flex",
+                                                    width: "100%",
+                                                    height: "50px",
+                                                    alignItems: "center",
+                                                    border: "1px solid",
+                                                    marginRight: "1%",
+                                                    borderRadius: "5px"
+                                                }}>
+                                                    <i className="fa-solid fa-calendar-days"
+                                                       style={{padding: "0 10px"}}></i>
+                                                    <span onClick={() => setOpenDate(!openDate)} className="text-search"
+                                                          style={{marginRight: "10px"}}>{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(date[0].endDate, "MM/dd/yyyy")}`}</span>
 
-                                                {openDate && <DateRange
-                                                    editableDateInputs={true}
-                                                    onChange={(item) => {
-                                                        let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
-                                                        if (item.selection.startDate >= yesterday) {
-                                                            setDate([item.selection])
-                                                        } else {
-                                                            Swal.fire({
-                                                                icon: 'error',
-                                                                title: "Can't choose this date!",
-                                                            })
-                                                        }
-                                                    }}
-                                                    moveRangeOnFirstSelection={false}
-                                                    ranges={date}
-                                                    className="date2"
-                                                />}
-                                            </div>
-                                            <Modal.Footer>
-                                                <Button variant="secondary"
-                                                        style={{backgroundColor: "#dc3545", borderColor: "#dc3545"}}
-                                                        onClick={handleClose}>
-                                                    Close
-                                                </Button>
-                                                <Button variant="primary" type={"submit"}
-                                                        onClick={() => getNumberRentDay()}>
-                                                    Save Changes
-                                                </Button>
-                                            </Modal.Footer>
-                                        </Modal.Body>
-                                    </div>
-                                </Modal>
+                                                    {openDate && <DateRange
+                                                        editableDateInputs={true}
+                                                        onChange={(item) => {
+                                                            let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+                                                            if (item.selection.startDate >= yesterday) {
+                                                                setDate([item.selection])
+                                                            } else {
+                                                                Swal.fire({
+                                                                    icon: 'error',
+                                                                    title: "Can't choose this date!",
+                                                                })
+                                                            }
+                                                        }}
+                                                        moveRangeOnFirstSelection={false}
+                                                        ranges={date}
+                                                        className="date2"
+                                                    />}
+                                                </div>
+                                                <Modal.Footer>
+                                                    <Button variant="secondary"
+                                                            style={{backgroundColor: "#dc3545", borderColor: "#dc3545"}}
+                                                            onClick={handleClose}>
+                                                        Close
+                                                    </Button>
+                                                    <Button variant="primary" type={"submit"}
+                                                            onClick={() => getNumberRentDay()}>
+                                                        Save Changes
+                                                    </Button>
+                                                </Modal.Footer>
+                                            </Modal.Body>
+                                        </div>
+                                    </Modal>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="container">
-                <div className="row justify-content-center">
-                    <h3>{dataHome[0] && dataHome[0].name}</h3>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <i className="fa-solid fa-location-pin" style={{color: "black", padding: "0 13px"}}></i>
-                        <div className="nav-link-strong">
-                            <p style={{color: "black"}}>
-                                {dataHome[0] && dataHome[0].address}
-                            </p>
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <h3>{dataHome[0] && dataHome[0].name}</h3>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <i className="fa-solid fa-location-pin" style={{color: "black", padding: "0 13px"}}></i>
+                            <div className="nav-link-strong">
+                                <p style={{color: "black"}}>
+                                    {dataHome[0] && dataHome[0].address}
+                                </p>
+                            </div>
+                        </div>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <i className="fa-solid fa-home" style={{color: "black", padding: "0 10px"}}></i>
+                            <div className="nav-link-strong">
+                                <p style={{color: "black"}}>
+                                    {dataHome[0] && dataHome[0].category}
+                                </p>
+                            </div>
+                        </div>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <i className="fa-solid fa-sink" style={{color: "black", padding: "0 10px"}}></i>
+                            <div className="nav-link-strong">
+                                <p style={{color: "black"}}>
+                                    {dataHome[0] && dataHome[0].bathroom} Bathroom
+                                </p>
+                            </div>
+                        </div>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <i className="fa-solid fa-bed" style={{color: "black", padding: "0 8px"}}></i>
+                            <div className="nav-link-strong">
+                                <p style={{color: "black"}}>
+                                    {dataHome[0] && dataHome[0].bedroom} Bedroom
+                                </p>
+                            </div>
+                        </div>
+                        <div className="price">
+                            <strong>From <small>{dataHome[0] && dataHome[0].price}<sup>$</sup> / Day</small></strong>
                         </div>
                     </div>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <i className="fa-solid fa-home" style={{color: "black", padding: "0 10px"}}></i>
-                        <div className="nav-link-strong">
-                            <p style={{color: "black"}}>
-                                {dataHome[0] && dataHome[0].category}
-                            </p>
+                    <div className="description">
+                        <strong>Description</strong>
+                        <p>{dataHome[0] && dataHome[0].description}</p>
+                    </div>
+                    <div className="storeImage" style={{marginTop: "20px"}}>
+                        <div className="row">
+                            <strong className="col-12">Photo Library</strong>
+                        </div>
+                        <div className="row">
+                            <div className="col-12" style={{display: "flex", flexWrap: "wrap"}}>
+                                {dataImage.map(image => (
+                                    <div className="col-3" style={{marginRight: "10px", marginBottom: "10px"}}>
+                                        <img className="" src={image.image}
+                                             style={{width: "100%", height: "100%"}}
+                                             alt="First slide"/>
+                                    </div>))}
+                            </div>
                         </div>
                     </div>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <i className="fa-solid fa-sink" style={{color: "black", padding: "0 10px"}}></i>
-                        <div className="nav-link-strong">
-                            <p style={{color: "black"}}>
-                                {dataHome[0] && dataHome[0].bathroom} Bathroom
-                            </p>
-                        </div>
-                    </div>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <i className="fa-solid fa-bed" style={{color: "black", padding: "0 8px"}}></i>
-                        <div className="nav-link-strong">
-                            <p style={{color: "black"}}>
-                                {dataHome[0] && dataHome[0].bedroom} Bedroom
-                            </p>
-                        </div>
-                    </div>
-                    <div className="price">
-                        <strong>From <small>{dataHome[0] && dataHome[0].price}<sup>$</sup> / Day</small></strong>
-                    </div>
-                </div>
-                <div className="description">
-                    <strong>Description</strong>
-                    <p>{dataHome[0] && dataHome[0].description}</p>
-                </div>
-                <div className="storeImage" style={{marginTop: "20px"}}>
-                    <div className="row">
-                        <strong className="col-12">Photo Library</strong>
-                    </div>
-                    <div className="row">
-                        <div className="col-12" style={{display: "flex", flexWrap: "wrap"}}>
-                            {dataImage.map(image => (
-                                <div className="col-3" style={{marginRight: "10px", marginBottom: "10px"}}>
-                                    <img className="" src={image.image}
-                                         style={{width: "100%", height: "100%"}}
-                                         alt="First slide"/>
-                                </div>))}
-                        </div>
-                    </div>
-                </div>
-                <strong className="col-12">Map</strong>
-                <div style={{height: '500px', width: '100%'}}>
-                    <GoogleMapReact
-                        bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
-                        defaultCenter={coords}
-                        defaultZoom={11}
-                        center={coords}
-                    >
-                        <AnyReactComponent
-                            lat={coords?.lat}
-                            lng={coords?.lng}
-                            text={<HiLocationMarker color={"red"} size={24}/>}
-                        />
-                    </GoogleMapReact>
-                </div>
-                <div className="comment" style={{marginTop: "20px"}}>
                     <strong>Comment</strong>
+                    <br/>
+                    {comment && comment.map(item=>(
+                        <>{item.username}:{item.comment}</>
+                    ))}
+                    <>
+                        <Formik initialValues={{
+                            userId:user.id,
+                            homeId:id,
+                            comment:""
+                        }} onSubmit={(values)=>dispatch(createComment(values)).then(e=>{
+                            console.log(e)
+                        })}>
+                            <Form>
+                                <Field name={'comment'} type={'text'}></Field>
+                                <button>Comment</button>
+                            </Form>
+                        </Formik>
+                    </>
+                    <br/>
+                    <strong className="col-12">Map</strong>
+                    <div style={{height: '500px', width: '100%'}}>
+                        <GoogleMapReact
+                            bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
+                            defaultCenter={coords}
+                            defaultZoom={11}
+                            center={coords}
+                        >
+                            <AnyReactComponent
+                                lat={coords?.lat}
+                                lng={coords?.lng}
+                                text={<HiLocationMarker color={"red"} size={24}/>}
+                            />
+                        </GoogleMapReact>
+                    </div>
+                    <div className="comment" style={{marginTop: "20px"}}>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>)
+        </div>)
 };
 
 export default Detail;

@@ -6,6 +6,7 @@ import categorySlice from "./categoryRedux/categorySlice";
 import contractSlice from "./contractRedux/contractSlice";
 import homesDaysSlice from "./homesDaysRedux/homesDaysSlice";
 import repairTimesSlice from "./repairTimesRedux/repairTimesSlice";
+import commentSlice from "./comment/commentSlice";
 
 const store = configureStore({
     reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
         category: categorySlice,
         contract: contractSlice,
         homesDays: homesDaysSlice,
-        repairTimes: repairTimesSlice
+        repairTimes: repairTimesSlice,
+        comment:commentSlice
     },
 })
 export default store
