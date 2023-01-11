@@ -20,39 +20,38 @@ import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import {Avatar} from "@mui/material";
 import "../page/CSS/comment.css"
+import axios from "axios";
 
 const InputSchema = Yup.object().shape({
     comment: Yup.string()
         .required("Please Enter Comment!"),
 })
 
-const AnyReactComponent = ({text}) => <div>{text}</div>;
-const {HiLocationMarker} = icons;
 const Detail = () => {
 
     //GG map
+    const {HiLocationMarker} = icons;
+    const AnyReactComponent = ({text}) => <div>{text}</div>;
+    let address = useSelector(state => {
+        return state.home.detailHome[0]
+    })
     const [coords, setCoords] = useState(null);
-    const address = useSelector(state => {
-        return state.home.listHome[0]
-    });
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(({coords: {longitude, latitude}}) => {
-            setCoords({lat: latitude, lng: longitude})
-        })
-    }, [])
-    // useEffect(() => {
-    //     const getCoords = async () => {
-    //         console.log(1)
-    //         const result = await geocodeByAddress("Tu Ky, Hai Duong").then((data)=>{
-    //             console.log(data)
-    //         }).catch((e)=>{
-    //             console.log(e)
-    //         })
-    //         const latLng = await getLatLng(result[0])
-    //         setCoords(latLng)
-    //     }
-    //     address && getCoords()
-    // }, [address])
+
+    mapboxgl.accessToken = 'pk.eyJ1Ijoibmd1eWVuY2FvMTk5NyIsImEiOiJjbGNxeXIzaW8wN2lpM25wMGZidHk2MXN2In0.B2tk71Q9h4cWLRplq4tmJw';
+
+    const [lng, setLng] = useState(null);
+    const [lat, setLat] = useState(null);
+
+    useEffect(()=>{
+        axios
+            .get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${address && address.address}.json?access_token=pk.eyJ1Ijoibmd1eWVuY2FvMTk5NyIsImEiOiJjbGNxeXIzaW8wN2lpM25wMGZidHk2MXN2In0.B2tk71Q9h4cWLRplq4tmJw`)
+            .then(res => {
+                setLat(res.data.features[0].center[1])
+                setLng(res.data.features[0].center[0])
+                setCoords({lat: res.data.features[0].center[1], lng: res.data.features[0].center[0]})
+            })
+    },[address])
+
     //End map
     const Swal = require('sweetalert2')
 
@@ -338,23 +337,6 @@ const Detail = () => {
                             </div>
                         </div>
                     </div>
-
-                    {/*<div style={{height: '500px', width: '100%'}}>*/}
-                    {/*    <GoogleMapReact*/}
-                    {/*        bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}*/}
-                    {/*        defaultCenter={coords}*/}
-                    {/*        defaultZoom={11}*/}
-                    {/*        center={coords}*/}
-                    {/*    >*/}
-                    {/*        <AnyReactComponent*/}
-                    {/*            lat={coords?.lat}*/}
-                    {/*            lng={coords?.lng}*/}
-                    {/*            text={<HiLocationMarker color={"red"} size={24}/>}*/}
-                    {/*        />*/}
-                    {/*    </GoogleMapReact>*/}
-                    {/*</div>*/}
-                    {/*<div className="comment" style={{marginTop: "20px"}}>*/}
-                    {/*</div>*/}
                     <>
                         <div className="">
                             <div className="row">
@@ -450,9 +432,45 @@ const Detail = () => {
                             </div>
                         ))}
                     </>
+                    <strong>Comment</strong>
+                    <br/>
+                    {comment && comment.map(item => (
+                        <>{item.username}:{item.comment}</>
+                    ))}
+                    <>
+                        <Formik initialValues={{
+                            userId: user.id,
+                            homeId: id,
+                            comment: ""
+                        }} onSubmit={(values) => dispatch(createComment(values))}>
+                            <Form>
+                                <Field name={'comment'} type={'text'}></Field>
+                                <button>Comment</button>
+                            </Form>
+                        </Formik>
+                    </>
+                    <br/>
+                    <strong className="col-12">Map</strong>
+                    <div>
+                        <div style={{height: '500px', width: '100%'}}>
+                            <GoogleMapReact
+                                bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
+                                defaultCenter={coords}
+                                defaultZoom={11}
+                                center={coords}
+                            >
+                                <AnyReactComponent
+                                    lat={coords?.lat}
+                                    lng={coords?.lng}
+                                    text={<HiLocationMarker color={"red"} size={24}/>}
+                                />
+                            </GoogleMapReact>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>)
+        </div>
+    )
 };
 
 export default Detail;
