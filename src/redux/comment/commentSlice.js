@@ -13,7 +13,7 @@ const commentSlice = createSlice({
             state.listComment=[...action.payload]
         })
         builder.addCase(createComment.fulfilled, (state, action) => {
-            state.listComment.push(action.payload)
+            state.listComment.push(action.payload.comment)
         })
     }
 })

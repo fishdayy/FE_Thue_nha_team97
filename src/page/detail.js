@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {showImagesByHomeId, showListImage} from "../service/imageService";
+import {showImagesByHomeId} from "../service/imageService";
 import {useNavigate, useParams} from "react-router-dom";
 import {showHome} from "../service/homeService";
 import './CSS/detail.css'
@@ -8,42 +8,39 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import {format} from "date-fns";
 import {DateRange} from "react-date-range";
-import Swal from "sweetalert2";
 import {createContract} from "../service/contractService";
 import {checkHomesDays, createHomesDays} from "../service/homesDaysService";
-import {geocodeByAddress, getLatLng} from "react-google-places-autocomplete";
-import GoogleMapReact from "google-map-react";
-import icons from "./icon";
 import {createComment, showComment} from "../service/commentService";
 import {Field, Form, Formik} from "formik";
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import GoogleMapReact from "google-map-react";
+import icons from "./icon";
+import axios from "axios";
 
-const AnyReactComponent = ({text}) => <div>{text}</div>;
-const {HiLocationMarker} = icons;
 const Detail = () => {
 
     //GG map
+    const {HiLocationMarker} = icons;
+    const AnyReactComponent = ({text}) => <div>{text}</div>;
+    let address = useSelector(state => {
+        return state.home.detailHome[0]
+    })
     const [coords, setCoords] = useState(null);
-    const address = useSelector(state => {
-        return state.home.listHome[0]
-    });
+
+    mapboxgl.accessToken = 'pk.eyJ1Ijoibmd1eWVuY2FvMTk5NyIsImEiOiJjbGNxeXIzaW8wN2lpM25wMGZidHk2MXN2In0.B2tk71Q9h4cWLRplq4tmJw';
+
+    const [lng, setLng] = useState(null);
+    const [lat, setLat] = useState(null);
+
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(({coords: {longitude, latitude}}) => {
-            setCoords({lat: latitude, lng: longitude})
-        })
-    }, [])
-    // useEffect(() => {
-    //     const getCoords = async () => {
-    //         console.log(1)
-    //         const result = await geocodeByAddress("Tu Ky, Hai Duong").then((data)=>{
-    //             console.log(data)
-    //         }).catch((e)=>{
-    //             console.log(e)
-    //         })
-    //         const latLng = await getLatLng(result[0])
-    //         setCoords(latLng)
-    //     }
-    //     address && getCoords()
-    // }, [address])
+        axios
+            .get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${address && address.address}.json?access_token=pk.eyJ1Ijoibmd1eWVuY2FvMTk5NyIsImEiOiJjbGNxeXIzaW8wN2lpM25wMGZidHk2MXN2In0.B2tk71Q9h4cWLRplq4tmJw`)
+            .then(res => {
+                setLat(res.data.features[0].center[1])
+                setLng(res.data.features[0].center[0])
+                setCoords({lat: res.data.features[0].center[1], lng: res.data.features[0].center[0]})
+            })
+    }, [address])
     //End map
     const Swal = require('sweetalert2')
 
@@ -82,14 +79,13 @@ const Detail = () => {
         return state.comment.listComment
     })
 
-    console.log(dataHome)
     useEffect(() => {
         (async () => {
             await dispatch(showHome(id))
             await dispatch(showImagesByHomeId(id))
             await dispatch(showComment(id))
         })()
-    }, [])
+    }, [comment.length])
 
     const getNumberRentDay = () => {
         const get_day_of_time = (d1, d2) => {
@@ -323,17 +319,15 @@ const Detail = () => {
                     </div>
                     <strong>Comment</strong>
                     <br/>
-                    {comment && comment.map(item=>(
+                    {comment && comment.map(item => (
                         <>{item.username}:{item.comment}</>
                     ))}
                     <>
                         <Formik initialValues={{
-                            userId:user.id,
-                            homeId:id,
-                            comment:""
-                        }} onSubmit={(values)=>dispatch(createComment(values)).then(e=>{
-                            console.log(e)
-                        })}>
+                            userId: user.id,
+                            homeId: id,
+                            comment: ""
+                        }} onSubmit={(values) => dispatch(createComment(values))}>
                             <Form>
                                 <Field name={'comment'} type={'text'}></Field>
                                 <button>Comment</button>
@@ -342,25 +336,26 @@ const Detail = () => {
                     </>
                     <br/>
                     <strong className="col-12">Map</strong>
-                    <div style={{height: '500px', width: '100%'}}>
-                        <GoogleMapReact
-                            bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
-                            defaultCenter={coords}
-                            defaultZoom={11}
-                            center={coords}
-                        >
-                            <AnyReactComponent
-                                lat={coords?.lat}
-                                lng={coords?.lng}
-                                text={<HiLocationMarker color={"red"} size={24}/>}
-                            />
-                        </GoogleMapReact>
-                    </div>
-                    <div className="comment" style={{marginTop: "20px"}}>
+                    <div>
+                        <div style={{height: '500px', width: '100%'}}>
+                            <GoogleMapReact
+                                bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
+                                defaultCenter={coords}
+                                defaultZoom={11}
+                                center={coords}
+                            >
+                                <AnyReactComponent
+                                    lat={coords?.lat}
+                                    lng={coords?.lng}
+                                    text={<HiLocationMarker color={"red"} size={24}/>}
+                                />
+                            </GoogleMapReact>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>)
+        </div>
+    )
 };
 
 export default Detail;
