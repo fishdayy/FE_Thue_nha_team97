@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {showImagesByHomeId, showListImage} from "../service/imageService";
-import {useNavigate, useParams} from "react-router-dom";
-import {showHome} from "../service/homeService";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {showHome, showStar} from "../service/homeService";
 import './CSS/detail.css'
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -156,7 +156,7 @@ const Detail = () => {
         })
     }
 
-    const [star, setStar] = React.useState(1);
+    const [star, setStar] = React.useState(0);
 
     return (
         <div>
@@ -170,19 +170,22 @@ const Detail = () => {
                     })}
                 </div>
             </div>
-            <div className="gray-simple pt-4">
+            <div className="pt-4">
                 <div className="container-fluid container-fluid-tab"
                      style={{
                          backgroundColor: "transparent", display: "flex", float: "left",
                      }}>
                     <div className="container" id="overview">
-                        <div className="row" style={{background: "#fff", margin: "0", display: "flex"}}>
+                        <div className="row" style={{
+                            boxShadow: "0px 1px 25px 0px rgba(193,193,193,1)",
+                            borderRadius: "10px",
+                            display: "flex"
+                        }}>
                             <div className="col-md-8" style={{boxSizing: "border-box", display: "block", width: "70%"}}>
                                 <ul className="flex-tab" style={{width: "60%"}}>
-                                    <li><a href="" className="overview1 active_1-1"
-                                           style={{color: "rgb(57, 70, 109)"}}>Overview</a></li>
-                                    <li><a href="" style={{color: "rgb(57, 70, 109)"}}>Photo library</a></li>
-                                    <li><a href="" style={{color: "rgb(57, 70, 109)"}}>Evaluate</a></li>
+                                    <li><a  style={{color: "rgb(57, 70, 109)"}}>Overview</a></li>
+                                    <li><a href="#photoLibrary" style={{color: "rgb(57, 70, 109)"}}>Photo library</a></li>
+                                    <li><a href="#evaluate" style={{color: "rgb(57, 70, 109)"}}>Evaluate</a></li>
                                 </ul>
                             </div>
                             <div className="col-md-4" style={{width: "30%"}}>
@@ -308,17 +311,21 @@ const Detail = () => {
                                 </p>
                             </div>
                         </div>
+                        <div>
+                            <strong>Average rating :</strong> {dataHome[0] && dataHome[0].star}
+                            <i className="fa fa-star text-warning"></i></div>
                         <div className="price">
                             <strong>From <small>{dataHome[0] && dataHome[0].price}<sup>$</sup> / Day</small></strong>
                         </div>
+
                     </div>
                     <div className="description">
                         <strong>Description</strong>
                         <p>{dataHome[0] && dataHome[0].description}</p>
                     </div>
-                    <div className="storeImage" style={{marginTop: "20px"}}>
+                    <div className="storeImage" style={{marginTop: "20px"}}  id="photoLibrary">
                         <div className="row">
-                            <strong className="col-12">Photo Library</strong>
+                            <strong className="col-12" >Photo Library</strong>
                         </div>
                         <div className="row">
                             <div className="col-12" style={{display: "flex", flexWrap: "wrap"}}>
@@ -349,68 +356,95 @@ const Detail = () => {
                     {/*<div className="comment" style={{marginTop: "20px"}}>*/}
                     {/*</div>*/}
                     <>
-                        <div className="card">
+                        <div className="">
                             <div className="row">
-                                <div className="col-1">
-                                    <img src={user.avatar} className="rounded-circle mt-2" style={{height:"100px",width:"100px"}}/>
-                                </div>
-                                <div className="col-11">
-                                    <div className="comment-box ml-2">
-                                        <h5>Add a comment</h5>
-                                        <Formik validationSchema={InputSchema} initialValues={{
-                                            userId: user.id,
-                                            homeId: id,
-                                            comment: ""
-                                        }} onSubmit={(values, {resetForm}) => {
-                                            dispatch(createComment(values))
-                                            resetForm()
-                                        }}>
-                                            <Form>
-                                        <div className="rating">
-                                            <Typography component="legend"></Typography>
-                                            <Rating
-                                                name="simple-controlled"
-                                                star={star}
-                                                onChange={(event, newValue) => {
-                                                    setStar(newValue);
-                                                }}
-                                            />
+                                <div className="col-12">
+                                    <div className="col-2">
+                                        <strong id="evaluate">Evaluate</strong>
+                                    </div>
+                                    <div className="col-12" style={{display: "flex"}}>
+                                        <div className="col-2" style={{width: "130px"}}>
+                                            <img src={user.avatar} className="rounded-circle mt-2 "
+                                                 style={{height: "100px", width: "100px"}}/>
                                         </div>
-                                        <div className="comment-area">
-                                        <Field name={'comment'} type={'text'} style={{resize:"none"}} className="form-control" placeholder="what is your view?"
-                                                  rows="4"></Field>
-                                            <ErrorMessage name="comment" component="div"
-                                                          style={{color: "red"}}></ErrorMessage>
-                                        </div>
-                                        <div className="comment-btns mt-2">
-                                            <div className="row">
-                                                <div className="col-2">
-                                                    <div className="pull-right">
-                                                        <button className="btn btn-success send btn-sm">Send <i
-                                                            className="fa fa-long-arrow-right ml-1"></i></button>
-                                                    </div>
+                                        <div className="col-10">
+                                            <div className="comment-box ml-2">
+                                                <div className="rating">
+                                                    <Typography component="legend"></Typography>
+                                                    <Rating
+                                                        name="simple-controlled"
+                                                        value={star}
+                                                        onChange={(event, newValue) => {
+                                                            setStar(newValue);
+                                                        }}
+                                                    />
                                                 </div>
+                                                <Formik validationSchema={InputSchema} initialValues={{
+                                                    userId: user.id,
+                                                    homeId: id,
+                                                    comment: ""
+                                                }} onSubmit={(values, {resetForm}) => {
+                                                    let data = {
+                                                        homeId: id,
+                                                        userId: user.id,
+                                                        comment: values.comment,
+                                                        star: star
+                                                    }
+                                                    dispatch(createComment(data)).then((res) => {
+                                                        dispatch(showStar(res.payload.comment.homeId))
+                                                    })
+                                                    resetForm()
+                                                }}>
+                                                    <Form>
+
+                                                        <div className="comment-area">
+                                                            <Field name={'comment'} type={'text'}
+                                                                   style={{resize: "none", width: "50%"}}
+                                                                   className="form-control"
+                                                                   placeholder="what is your view?"
+                                                                   rows="4"></Field>
+                                                            <ErrorMessage name="comment" component="div"
+                                                                          style={{color: "red"}}></ErrorMessage>
+                                                        </div>
+                                                        <div className="comment-btns mt-2">
+                                                            <div className="row">
+                                                                <div className="col-2">
+                                                                    <div className="pull-right">
+                                                                        <button
+                                                                            className="btn btn-danger"
+                                                                            type="submit">Send <i
+                                                                            className="fa fa-long-arrow-right ml-1"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Form>
+                                                </Formik>
                                             </div>
                                         </div>
-                                            </Form>
-                                        </Formik>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         {comment && comment.map(item => (
-                            <div className="card p-3">
+                            <div className="border-bottom p-3">
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div className="user d-flex flex-row align-items-center">
-                                        <Avatar alt="Remy Sharp" src={item.avatar} style={{marginRight:"10px"}}/>
-                                        <span><small className="font-weight-bold text-primary">{item.username}</small> <small
+                                        <Avatar alt="Remy Sharp" src={item.avatar} style={{marginRight: "10px"}}/>
+                                        <span><small
+                                            className="font-weight-bold text-primary">{item.username}</small> <small
                                             className="font-weight-bold">{item.comment}</small></span><br/>
                                     </div>
                                     <div className="action d-flex justify-content-between mt-2 align-items-center">
-                                        <div className="icons align-items-center">
-                                            <i className="fa fa-star text-warning"></i>
-                                            <i className="fa fa-check-circle-o check-icon"></i>
+                                        <div>
+                                            <Typography component="legend"></Typography>
+                                            <Rating
+                                                name="simple-controlled"
+                                                value={item.star}
+                                            />
                                         </div>
+                                        <i className="fa fa-check-circle-o check-icon"></i>
                                     </div>
                                 </div>
                             </div>

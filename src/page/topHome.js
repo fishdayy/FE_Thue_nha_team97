@@ -9,7 +9,6 @@ function TopHome() {
         return state.home.top4Home
     })
 
-    console.log(dataHome)
 
     const dispatch = useDispatch()
 

@@ -5,7 +5,7 @@ import {
     showHome,
     showHomesByAddress,
     showHomesByCategory, showHomesByTime,
-    showListHome, showTop4,
+    showListHome, showStar, showTop4,
     showYourHomes
 } from "../../service/homeService";
 
@@ -47,6 +47,9 @@ const homeSlice = createSlice({
         })
         builder.addCase(showHomesByTime.fulfilled, (state, action) => {
             state.listHome = [...action.payload]
+        })
+        builder.addCase(showStar.fulfilled, (state, action) => {
+            state.detailHome = [...action.payload]
         })
     }
 })

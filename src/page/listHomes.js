@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {showListHome} from "../service/homeService";
 import {Link} from "react-router-dom";
@@ -6,21 +6,42 @@ import Search from "../components/Search";
 import Banner from "../components/Banner";
 import TopHome from "./topHome";
 import './CSS/post.css'
+import Pagination from "../components/Pagination";
+
 
 const ListHome = () => {
     let dataHome = useSelector(state => {
-        console.log(state)
         return state.home.listHome
     })
-
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(8);
     const dispatch = useDispatch()
 
     useEffect(() => {
-        (async () => {
+        const fetchPosts =async () => {
+            setLoading(true);
             await dispatch(showListHome())
-        })()
+            setLoading(false);
+        };
+        fetchPosts();
     }, [])
+    // useEffect(() => {
+    //     const fetchPosts = async () => {
+    //         setLoading(true);
+    //         const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
+    //         setPosts(res.data);
+    //         setLoading(false);
+    //     };
+    //
+    //     fetchPosts();
+    // }, []);
 
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = dataHome.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
 
     return (<div>
         <div>
@@ -47,7 +68,7 @@ const ListHome = () => {
         <div className="row">
             <div className="col-12">
                 <div className="row p-3">
-                    {dataHome.map(item => (
+                    {dataHome.slice((currentPage - 1) * postsPerPage, (currentPage) * postsPerPage).map(item => (
                         <div className="col-3 item-home">
                             <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
                                 <div className="carousel-inner">
@@ -77,6 +98,13 @@ const ListHome = () => {
                                     style={{fontWeight: "200", marginLeft: "10px"}}>/ Day</label></strong>
                             </div>
                         </div>))}
+                </div>
+                <div>
+                    <Pagination
+                        postsPerPage={postsPerPage}
+                        totalPosts={dataHome.length}
+                        paginate={paginate}
+                    />
                 </div>
             </div>
         </div>
