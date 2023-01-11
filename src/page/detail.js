@@ -21,6 +21,8 @@ import Typography from '@mui/material/Typography';
 import {Avatar} from "@mui/material";
 import "../page/CSS/comment.css"
 import axios from "axios";
+import mapboxgl from "mapbox-gl";
+import {createNotification} from "../service/notificationService";
 
 const InputSchema = Yup.object().shape({
     comment: Yup.string()
@@ -137,6 +139,12 @@ const Detail = () => {
                                 let idContract = res.payload.idContract
                                 let newData = {...data, idContract}
                                 dispatch(createHomesDays(newData))
+                                let dataNotification = {
+                                    homeId: dataHome[0] && dataHome[0].id,
+                                    username: user.username,
+                                    content: "Rented"
+                                }
+                                dispatch(createNotification(dataNotification))
                             }),
                             navigate('/home')
                         )
@@ -337,10 +345,26 @@ const Detail = () => {
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <div style={{height: '500px', width: '100%'}}>
+                            <GoogleMapReact
+                                bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
+                                defaultCenter={coords}
+                                defaultZoom={11}
+                                center={coords}
+                            >
+                                <AnyReactComponent
+                                    lat={coords?.lat}
+                                    lng={coords?.lng}
+                                    text={<HiLocationMarker color={"red"} size={24}/>}
+                                />
+                            </GoogleMapReact>
+                        </div>
+                    </div>
                     <>
                         <div className="">
                             <div className="row">
-                                <div className="col-12">
+                                <div className="col-12" style={{marginTop:"20px"}}>
                                     <div className="col-2">
                                         <strong id="evaluate">Evaluate</strong>
                                     </div>
@@ -357,7 +381,11 @@ const Detail = () => {
                                                         name="simple-controlled"
                                                         value={star}
                                                         onChange={(event, newValue) => {
-                                                            setStar(newValue);
+                                                            if (newValue === null) {
+                                                                setStar(0)
+                                                            } else {
+                                                                setStar(newValue);
+                                                            }
                                                         }}
                                                     />
                                                 </div>
@@ -375,6 +403,12 @@ const Detail = () => {
                                                     dispatch(createComment(data)).then((res) => {
                                                         dispatch(showStar(res.payload.comment.homeId))
                                                     })
+                                                    let dataNotification = {
+                                                        homeId: dataHome[0] && dataHome[0].id,
+                                                        username: user.username,
+                                                        content: "Commented"
+                                                    }
+                                                    dispatch(createNotification(dataNotification))
                                                     resetForm()
                                                 }}>
                                                     <Form>
@@ -432,41 +466,6 @@ const Detail = () => {
                             </div>
                         ))}
                     </>
-                    <strong>Comment</strong>
-                    <br/>
-                    {comment && comment.map(item => (
-                        <>{item.username}:{item.comment}</>
-                    ))}
-                    <>
-                        <Formik initialValues={{
-                            userId: user.id,
-                            homeId: id,
-                            comment: ""
-                        }} onSubmit={(values) => dispatch(createComment(values))}>
-                            <Form>
-                                <Field name={'comment'} type={'text'}></Field>
-                                <button>Comment</button>
-                            </Form>
-                        </Formik>
-                    </>
-                    <br/>
-                    <strong className="col-12">Map</strong>
-                    <div>
-                        <div style={{height: '500px', width: '100%'}}>
-                            <GoogleMapReact
-                                bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
-                                defaultCenter={coords}
-                                defaultZoom={11}
-                                center={coords}
-                            >
-                                <AnyReactComponent
-                                    lat={coords?.lat}
-                                    lng={coords?.lng}
-                                    text={<HiLocationMarker color={"red"} size={24}/>}
-                                />
-                            </GoogleMapReact>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

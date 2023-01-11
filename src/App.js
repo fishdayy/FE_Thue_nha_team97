@@ -15,6 +15,7 @@ import HomeRental from "./page/previousRental";
 import HomeByCategory from "./page/homeByCategory";
 import HomeBySearch from "./page/homeBySearch";
 import {useEffect} from "react";
+import Notification from "./page/notification";
 
 function App() {
     let location = useLocation();
@@ -41,6 +42,7 @@ function App() {
                         <Route path={'create'} element={<CreatePost/>}></Route>
                         <Route path={'your-homes'} element={<YourHomes></YourHomes>}></Route>
                         <Route path={'edit/:id'} element={<EditPost></EditPost>}></Route>
+                        <Route path={'notification'} element={<Notification></Notification>}></Route>
                     </Route>
                     :
                     <Route path="*" element={<Login/>}/>

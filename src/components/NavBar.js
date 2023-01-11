@@ -52,6 +52,9 @@ const Navbar = () => {
                                             <li><Link to={'/home/home-rental-history'}><a className="dropdown-item">Home Rental History</a></Link></li>
                                         </ul>
                                     </li>
+                                    <li className="nav-item">
+                                        <Link to={'/home/notification'}><a className="nav-link">Notification</a></Link>
+                                    </li>
                                 </ul>
                                 <ul className="username" style={{listStyle:"none",marginRight:"20px",marginBottom:"0px"}}>
                                     <li className="nav-item">

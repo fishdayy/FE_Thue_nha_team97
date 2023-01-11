@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {removeContract, showContractsByUserId} from "../service/contractService";
 import {removeHomesDays} from "../service/homesDaysService";
 import Swal from "sweetalert2";
+import {createNotification} from "../service/notificationService";
 
 const History = () => {
 
@@ -24,7 +25,7 @@ const History = () => {
 
     return (<div>
         <div className="row">
-            <h2 style={{textAlign: "center",color:"#dc3545"}}>Trips</h2>
+            <h2 style={{textAlign: "center", color: "#dc3545"}}>Trips</h2>
             <p style={{textAlign: "center"}}>Time to dust off your bags and start planning your next adventure</p>
         </div>
         <div style={{backgroundColor: "white", marginTop: '10px'}}>
@@ -89,6 +90,12 @@ const History = () => {
                                                             if (result.isConfirmed) {
                                                                 swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted!', 'success', dispatch(removeContract(item.id)).then((res) => {
                                                                     dispatch(removeHomesDays(res.payload.idContract))
+                                                                    let dataNotification = {
+                                                                        homeId: item.homeId,
+                                                                        username: user.username,
+                                                                        content: "Cancel the rental"
+                                                                    }
+                                                                    dispatch(createNotification(dataNotification))
                                                                 }))
                                                             } else if (/* Read more about handling dismissals below */
                                                                 result.dismiss === Swal.DismissReason.cancel) {
