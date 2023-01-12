@@ -11,8 +11,16 @@ import {
 } from "firebase/storage";
 import {createImg, showImagesByHomeId} from "../service/imageService";
 import Swal from "sweetalert2";
+import * as Yup from "yup";
 
 const EditPost = () => {
+
+    const InputSchema = Yup.object().shape({
+        price: Yup.number()
+            .min(1, "Can't be less than 1$")
+            .required("Please Enter Price!"),
+    })
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userId = useSelector(state => {
@@ -31,47 +39,59 @@ const EditPost = () => {
         return state.home.detailHome[0]
     })
 
+    let user = useSelector(state => {
+        return state.user.userNow.user.userFind[0]
+    })
+
     const handleSubmit = async (values) => {
-        let avatar = urls[0]
-        if (values.name === "") {
-            values.name = home.name
+        if (home.userId === user.id) {
+            let avatar = urls[0]
+            if (values.name === "") {
+                values.name = home.name
+            }
+            if (values.address === "") {
+                values.address = home.address
+            }
+            if (values.price === "") {
+                values.price = home.price
+            }
+            if (values.description === "") {
+                values.description = home.description
+            }
+            if (values.categoryId === "") {
+                values.categoryId = home.categoryId
+            }
+            if (values.bedroom === "") {
+                values.bedroom = home.bedroom
+            }
+            if (values.bathroom === "") {
+                values.bathroom = home.bathroom
+            }
+            let data = {...values, id, avatar}
+            let homes = await dispatch(editHome(data))
+            let homeId = await homes.payload.idHome
+            for (let i = 0; i < urls.length; i++) {
+                let image = urls[i]
+                let data = {homeId, image}
+                await dispatch(createImg(data))
+            }
+            Swal.fire({
+                icon: 'success',
+                title: 'Updated',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            setTimeout(() => {
+                clearTimeout()
+                navigate('/home/your-homes')
+            }, 1500)
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: "Can't edit!",
+                text: 'This is not your home!',
+            })
         }
-        if (values.address === "") {
-            values.address = home.address
-        }
-        if (values.price === "") {
-            values.price = home.price
-        }
-        if (values.description === "") {
-            values.description = home.description
-        }
-        if (values.categoryId === "") {
-            values.categoryId = home.categoryId
-        }
-        if (values.bedroom === "") {
-            values.bedroom = home.bedroom
-        }
-        if (values.bathroom === "") {
-            values.bathroom = home.bathroom
-        }
-        let data = {...values, id, avatar}
-        let homes = await dispatch(editHome(data))
-        let homeId = await homes.payload.idHome
-        for (let i = 0; i < urls.length; i++) {
-            let image = urls[i]
-            let data = {homeId, image}
-            await dispatch(createImg(data))
-        }
-        Swal.fire({
-            icon: 'success',
-            title: 'Updated',
-            showConfirmButton: false,
-            timer: 1500
-        })
-        setTimeout(() => {
-            clearTimeout()
-            navigate('/home/your-homes')
-        }, 1500)
     }
     //Upload IMG
     const [images, setImages] = useState([]);
@@ -132,7 +152,7 @@ const EditPost = () => {
                     accommodation you rent and do you want guests to book the whole house or just a specific room</p>
                 <div className="formCreate">
                     <div className="create" id="backgroundCreate" style={{float: "left"}}>
-                        <Formik initialValues={{
+                        <Formik validationSchema={InputSchema} initialValues={{
                             name: '',
                             address: '',
                             price: '',
@@ -145,24 +165,29 @@ const EditPost = () => {
                             <Form id="createPost" tabIndex="500">
                                 <h3 style={{color: "#dc3545"}}>Edit Post Rent Home</h3>
                                 <div className="name" style={{display: "flex"}}>
-                                    <Field type="text" name="name" placeholder={home && home.name} style={{borderRadius:"10px"}}/>
+                                    <Field type="text" name="name" placeholder={home && home.name}
+                                           style={{borderRadius: "10px"}}/>
                                     <label>Name</label>
                                 </div>
                                 <div className="address" style={{display: "flex"}}>
-                                    <Field type="text" name="address" placeholder={home && home.address} style={{borderRadius:"10px"}}/>
+                                    <Field type="text" name="address" placeholder={home && home.address}
+                                           style={{borderRadius: "10px"}}/>
                                     <label>Address</label>
                                 </div>
                                 <div className="Price" style={{display: "flex"}}>
-                                    <Field type="number" name="price" placeholder={home && home.price} style={{borderRadius:"10px"}}/>
+                                    <Field type="number" name="price" placeholder={home && home.price}
+                                           style={{borderRadius: "10px"}}/>
+                                    <ErrorMessage name="price" component="div" style={{color: "red"}}></ErrorMessage>
                                     <label>Price</label>
                                 </div>
                                 <div className="description" style={{display: "flex"}}>
-                                    <Field style={{height: "200px",borderRadius:"10px"}} name="description" placeholder={home &&home.description} />
+                                    <Field style={{height: "200px", borderRadius: "10px"}} name="description"
+                                           placeholder={home && home.description}/>
                                     <label>Description</label>
                                 </div>
                                 <div className="category" style={{display: "flex"}}>
-                                    <Field as={"select"} name={"categoryId"} style={{borderRadius:"10px"}}>
-                                        <option value="">{home &&home.category}</option>
+                                    <Field as={"select"} name={"categoryId"} style={{borderRadius: "10px"}}>
+                                        <option value="">{home && home.category}</option>
                                         <option value="1">House</option>
                                         <option value="2">Homestay</option>
                                         <option value="3">Hotel</option>
@@ -170,8 +195,8 @@ const EditPost = () => {
                                     <label>Category</label>
                                 </div>
                                 <div className="bedroom" style={{display: "flex"}}>
-                                    <Field as={"select"} name={"bedroom"} style={{borderRadius:"10px"}}>
-                                        <option value="">{home &&home.bedroom}</option>
+                                    <Field as={"select"} name={"bedroom"} style={{borderRadius: "10px"}}>
+                                        <option value="">{home && home.bedroom}</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -179,15 +204,15 @@ const EditPost = () => {
                                     <label>Bedroom</label>
                                 </div>
                                 <div className="bathroom" style={{display: "flex"}}>
-                                    <Field as={"select"} name={"bathroom"} style={{borderRadius:"10px"}}>
-                                        <option value="">{home &&home.bathroom}</option>
+                                    <Field as={"select"} name={"bathroom"} style={{borderRadius: "10px"}}>
+                                        <option value="">{home && home.bathroom}</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                     </Field>
                                     <label>Bathroom</label>
                                 </div>
-                                <div className="submit" style={{border: "1px solid #999",borderRadius:"10px"}}>
+                                <div className="submit" style={{border: "1px solid #999", borderRadius: "10px"}}>
                                     <button className="dark">Submit</button>
                                 </div>
                             </Form>
@@ -202,7 +227,7 @@ const EditPost = () => {
                                 left: "5%"
                             }}
                                    type="file" multiple onChange={handleChange}/>
-                            <button style={{color: 'red', position: 'relative',width:"215px", bottom: '7.5rem'}}
+                            <button style={{color: 'red', position: 'relative', width: "215px", bottom: '7.5rem'}}
                                     onClick={() => dispatch(handleUpload)}>Change Avatar
                             </button>
                         </div>

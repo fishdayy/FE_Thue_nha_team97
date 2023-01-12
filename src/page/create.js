@@ -19,6 +19,7 @@ const InputSchema = Yup.object().shape({
     address: Yup.string()
         .required("Please Enter Address!"),
     price: Yup.number()
+        .min(1, "Can't be less than 1$")
         .required("Please Enter Price!"),
     description: Yup.string()
         .required("Please Enter Description!"),
