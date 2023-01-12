@@ -136,7 +136,7 @@ const CreatePost = () => {
                                     <label>Price</label>
                                 </div>
                                 <div className="description" style={{display: "flex"}}>
-                                    <Field style={{height: "200px"}} name="description" style={{borderRadius:"10px"}}/>
+                                    <Field style={{height: "200px",borderRadius:"10px"}} name="description" />
                                     <ErrorMessage name="description" component="div"
                                                   style={{color: "red"}}></ErrorMessage>
                                     <label>Description</label>
