@@ -3,7 +3,7 @@ export default function Banner() {
         <>
             <div >
                 <img
-                    src="https://www.biaslimited.com/wp-content/uploads/2020/03/fernando-alvarez-rodriguez-M7GddPqJowg-unsplash-1500x430.jpg"
+                    src="https://asahiluxstay.com/v2/images/home/banner-3.jpg?v=1"
                     style={{width: "100%", height: "100%"}}/>
             </div>
         </>

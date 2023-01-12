@@ -1,7 +1,9 @@
 import NavBar from "../components/NavBar";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {showNotifications} from "../service/notificationService";
+import {showContractsByUserCreate} from "../service/contractService";
+import Pagination from "../components/Pagination";
 
 const Notification = () => {
 
@@ -14,11 +16,24 @@ const Notification = () => {
         return state.user.userNow.user.userFind[0]
     })
 
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(8);
+
     useEffect(() => {
-        (async () => {
+        const fetchPosts =async () => {
+            setLoading(true);
             await dispatch(showNotifications(user.id))
-        })()
+            setLoading(false);
+        };
+        fetchPosts();
     }, [])
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = notifications.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
 
     return (<>
             <div style={{marginBottom: "50px"}}>
@@ -53,7 +68,8 @@ const Notification = () => {
                                             </tr>
                                             </thead>
                                             <tbody className="table-group-striped">
-                                            {notifications.map(item => (<tr className="align-bottom">
+                                            {notifications.slice((currentPage - 1) * postsPerPage, (currentPage) * postsPerPage).map(item => (
+                                                <tr className="align-bottom">
                                                 <td className="">{item.username}</td>
                                                 <td className="">{item.content}</td>
                                                 <td className="">{item.name}</td>
@@ -61,6 +77,13 @@ const Notification = () => {
                                             </tr>))}
                                             </tbody>
                                         </table>
+                                        <div>
+                                            <Pagination
+                                                postsPerPage={postsPerPage}
+                                                totalPosts={notifications.length}
+                                                paginate={paginate}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

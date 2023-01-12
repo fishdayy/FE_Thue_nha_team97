@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {showContractsByUserCreate, showIncome} from "../service/contractService";
 import {Field, Form, Formik} from "formik";
+import {showListHome} from "../service/homeService";
+import Pagination from "../components/Pagination";
 
 const HomeRental = () => {
 
@@ -20,16 +22,29 @@ const HomeRental = () => {
         return state.user.userNow.user.userFind[0]
     })
 
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(8);
+
     useEffect(() => {
-        (async () => {
+        const fetchPosts =async () => {
+            setLoading(true);
             await dispatch(showContractsByUserCreate(user.id))
-        })()
+            setLoading(false);
+        };
+        fetchPosts();
     }, [])
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = contracts.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
 
     return (<div>
         <div className="row">
             <h2 style={{textAlign: "center",color:"#dc3545"}}>Trips</h2>
-            <p style={{textAlign: "center"}}>Time to dust off your bags and start planning your next adventure</p>
+            <p style={{textAlign: "center"}}>Time to dust off your bags and start planning your next adventure.</p>
         </div>
         <div style={{backgroundColor: "white", marginTop: '10px'}}>
             <div className="container">
@@ -52,8 +67,8 @@ const HomeRental = () => {
                             dispatch(showIncome(data))
                         }}>
                             <Form>
-                                <label style={{marginRight: "10px"}}><strong>Month</strong></label>
-                                <Field as={"select"} style={{marginRight: "40px"}} name={"monthFind"}>
+                                <label style={{marginRight: "10px"}}><strong>Month :</strong></label>
+                                <Field as={"select"} style={{marginRight: "40px",borderRadius:"5px"}} name={"monthFind"}>
                                     <option value={""}>Month</option>
                                     <option value={"1"}>1</option>
                                     <option value={"2"}>2</option>
@@ -68,9 +83,9 @@ const HomeRental = () => {
                                     <option value={"11"}>11</option>
                                     <option value={"12"}>12</option>
                                 </Field>
-                                <label style={{marginRight: "10px"}}><strong>Year</strong></label>
+                                <label style={{marginRight: "10px"}}><strong>Year :</strong></label>
 
-                                <Field style={{marginBottom: "10px"}} as={"select"} name={"yearFind"}>
+                                <Field style={{marginBottom: "10px",borderRadius:"5px"}} as={"select"} name={"yearFind"}>
                                     <option value={""} disabled selected>Year</option>
                                     <option value={"2023"}>2023</option>
                                     <option value={"2024"}>2024</option>
@@ -112,7 +127,9 @@ const HomeRental = () => {
                                         </tr>
                                         </thead>
                                         <tbody className="table-group-striped">
-                                        {contracts.map(item => (<tr className="align-bottom">
+                                        {contracts.slice((currentPage - 1) * postsPerPage, (currentPage) * postsPerPage).map(item => (
+
+                                            <tr className="align-bottom">
                                             <td className="">{item.name}</td>
                                             <td className="">{item.fullName}</td>
                                             <td className="">{item.timeStart}</td>
@@ -121,6 +138,13 @@ const HomeRental = () => {
                                         </tr>))}
                                         </tbody>
                                     </table>
+                                    <div>
+                                        <Pagination
+                                            postsPerPage={postsPerPage}
+                                            totalPosts={contracts.length}
+                                            paginate={paginate}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>

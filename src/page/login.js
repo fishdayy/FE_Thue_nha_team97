@@ -64,13 +64,13 @@ const Login = () => {
                     <Form id="login" tabIndex="500" >
                         <h3 >Login</h3>
                         <div className="mail" style={{display: "flex"}}>
-                            <Field type="text" name={'username'} style={{borderRadius:"10px"}}/>
-                            <ErrorMessage name="username" component="div" style={{color: "red"}}></ErrorMessage>
+                            <Field type="text" name={'username'} style={{borderRadius:"12px"}}/>
+                            <ErrorMessage name="username" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                             <label>Mail or Username</label>
                         </div>
                         <div className="passwd" style={{display: "flex"}}>
                             <Field name={'password'} type="password" style={{borderRadius:"10px"}}/>
-                            <ErrorMessage name="password" component="div" style={{color: "red"}}></ErrorMessage>
+                            <ErrorMessage name="password" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                             <label>Password</label>
                         </div>
                         <div className="submit">

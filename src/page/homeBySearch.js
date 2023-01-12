@@ -1,16 +1,27 @@
-import React from 'react';
-import {useSelector} from "react-redux";
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import Search from "../components/Search";
 import Banner from "../components/Banner";
+import {showListHome} from "../service/homeService";
+import Pagination from "../components/Pagination";
 
 const HomesBySearch = () => {
 
     let dataHome = useSelector(state => {
-        console.log(state)
         return state.home.listHome
     })
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(8);
+    const dispatch = useDispatch()
 
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = dataHome.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
     return (<div>
         <div>
             <Banner></Banner>
@@ -25,7 +36,8 @@ const HomesBySearch = () => {
         <div className="row">
             <div className="col-12">
                 <div className="row p-3">
-                    {dataHome.map(item => (
+
+                    {dataHome.slice((currentPage - 1) * postsPerPage, (currentPage) * postsPerPage).map(item => (
                         <div className="col-3 item-home">
                             <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
                                 <div className="carousel-inner">
@@ -50,6 +62,13 @@ const HomesBySearch = () => {
                                     style={{fontWeight: "200", marginLeft: "10px"}}>/ Day</label></strong>
                             </div>
                         </div>))}
+                </div>
+                <div>
+                    <Pagination
+                        postsPerPage={postsPerPage}
+                        totalPosts={dataHome.length}
+                        paginate={paginate}
+                    />
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {removeHome, showYourHomes} from "../service/homeService";
+import {removeHome, showListHome, showYourHomes} from "../service/homeService";
 import {Link} from "react-router-dom";
 import Swal from 'sweetalert2';
 import Modal from "react-bootstrap/Modal";
@@ -9,6 +9,7 @@ import {DateRange} from "react-date-range";
 import Button from "react-bootstrap/Button";
 import {checkHomesDays, createHomesDays, removeHomesDays2} from "../service/homesDaysService";
 import {createRepairTime, removeRepairTime, showByHomeId} from "../service/repairTimesService";
+import Pagination from "../components/Pagination";
 
 const YourHomes = () => {
 
@@ -31,17 +32,31 @@ const YourHomes = () => {
     let dataHome = useSelector(state => {
         return state.home.listHome
     })
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(8);
+
+    useEffect(() => {
+        const fetchPosts =async () => {
+            setLoading(true);
+            await dispatch(showYourHomes(userId))
+            setLoading(false);
+        };
+        fetchPosts();
+    }, [])
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = dataHome.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
 
     let userId = useSelector(state => {
         return state.user.userNow.user.userFind[0].id
     })
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        (async () => {
-            await dispatch(showYourHomes(userId))
-        })()
-    }, [])
+
 
     const repairTimes = useSelector(state => {
         return state.repairTimes.listRepairTime
@@ -108,7 +123,8 @@ const YourHomes = () => {
         <div className="row">
             <div className="col-12">
                 <div className="row p-3">
-                    {dataHome.map(item => (<div className="col-3">
+                    {dataHome.slice((currentPage - 1) * postsPerPage, (currentPage) * postsPerPage).map(item => (
+                        <div className="col-3 mt-2 item-home">
                         <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
@@ -318,6 +334,13 @@ const YourHomes = () => {
                             </Modal>
                         </div>
                     </div>))}
+                </div>
+                <div>
+                    <Pagination
+                        postsPerPage={postsPerPage}
+                        totalPosts={dataHome.length}
+                        paginate={paginate}
+                    />
                 </div>
             </div>
         </div>

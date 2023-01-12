@@ -77,17 +77,17 @@ const Register = () => {
                         <h3>Register</h3>
                         <div className="mail" style={{display: "flex"}}>
                             <Field name={'username'} type="text" style={{borderRadius: "10px"}}/>
-                            <ErrorMessage name="username" component="div" style={{color: "red"}}></ErrorMessage>
+                            <ErrorMessage name="username" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                             <label>Mail or Username</label>
                         </div>
                         <div className="passwd" style={{display: "flex"}}>
                             <Field name={'password'} type="password" style={{borderRadius: "10px"}}/>
-                            <ErrorMessage name="password" component="div" style={{color: "red"}}></ErrorMessage>
+                            <ErrorMessage name="password" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                             <label>Password</label>
                         </div>
                         <div className="passwd" style={{display: "flex"}}>
                             <Field name={'repeatPassword'} type="password" style={{borderRadius: "10px"}}/>
-                            <ErrorMessage name="repeatPassword" component="div" style={{color: "red"}}></ErrorMessage>
+                            <ErrorMessage name="repeatPassword" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                             <label>Repeat Password</label>
                         </div>
                         <div className="submit">

@@ -336,7 +336,11 @@ const Detail = () => {
                         </div>
                     </div>
                 </div>
+
                 <div>
+                    <div className="row">
+                        <strong className="col-12">Location</strong>
+                    </div>
                     <div style={{height: '500px', width: '100%'}}>
                         <GoogleMapReact
                             bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
@@ -407,10 +411,10 @@ const Detail = () => {
                                                         <Field name={'comment'} type={'text'}
                                                                style={{resize: "none", width: "50%"}}
                                                                className="form-control"
-                                                               placeholder="what is your view?"
+                                                               placeholder="What is your evaluate?"
                                                                rows="4"></Field>
                                                         <ErrorMessage name="comment" component="div"
-                                                                      style={{color: "red"}}></ErrorMessage>
+                                                                      style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                                     </div>
                                                     <div className="comment-btns mt-2">
                                                         <div className="row">

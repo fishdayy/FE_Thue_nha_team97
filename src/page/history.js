@@ -1,9 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {removeContract, showContractsByUserId} from "../service/contractService";
+import {removeContract, showContractsByUserCreate, showContractsByUserId} from "../service/contractService";
 import {removeHomesDays} from "../service/homesDaysService";
 import Swal from "sweetalert2";
 import {createNotification} from "../service/notificationService";
+import Pagination from "../components/Pagination";
 
 const History = () => {
 
@@ -17,16 +18,29 @@ const History = () => {
         return state.user.userNow.user.userFind[0]
     })
 
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(8);
+
     useEffect(() => {
-        (async () => {
+        const fetchPosts =async () => {
+            setLoading(true);
             await dispatch(showContractsByUserId(user.id))
-        })()
+            setLoading(false);
+        };
+        fetchPosts();
     }, [])
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = contracts.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
 
     return (<div>
         <div className="row">
             <h2 style={{textAlign: "center", color: "#dc3545"}}>Trips</h2>
-            <p style={{textAlign: "center"}}>Time to dust off your bags and start planning your next adventure</p>
+            <p style={{textAlign: "center"}}>Time to dust off your bags and start planning your next adventure.</p>
         </div>
         <div style={{backgroundColor: "white", marginTop: '10px'}}>
             <div className="container">
@@ -55,7 +69,8 @@ const History = () => {
                                         </tr>
                                         </thead>
                                         <tbody className="table-group-striped">
-                                        {contracts.map(item => (<tr className="align-bottom">
+                                        {contracts.slice((currentPage - 1) * postsPerPage, (currentPage) * postsPerPage).map(item => (
+                                            <tr className="align-bottom">
                                             <td className="">{item.name}</td>
                                             <td className="">{user.fullName}</td>
                                             <td className="">{item.timeStart}</td>
@@ -112,6 +127,13 @@ const History = () => {
                                         </tr>))}
                                         </tbody>
                                     </table>
+                                    <div>
+                                        <Pagination
+                                            postsPerPage={postsPerPage}
+                                            totalPosts={contracts.length}
+                                            paginate={paginate}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>

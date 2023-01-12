@@ -222,7 +222,7 @@ const Profile = () => {
                                                             style={{borderRadius: "10px"}}
                                                         />
                                                         <ErrorMessage name="oldPassword" component="div"
-                                                                      style={{color: "red"}}></ErrorMessage>
+                                                                      style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                                         <Field
                                                             name="newPassword"
                                                             type="password"
@@ -230,7 +230,7 @@ const Profile = () => {
                                                             style={{marginTop: "10px", borderRadius: "10px"}}
                                                         />
                                                         <ErrorMessage name="newPassword" component="div"
-                                                                      style={{color: "red"}}></ErrorMessage>
+                                                                      style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                                         <Field
                                                             name="repeatNewPassword"
                                                             type="password"
@@ -238,7 +238,7 @@ const Profile = () => {
                                                             style={{marginTop: "10px", borderRadius: "10px"}}
                                                         />
                                                         <ErrorMessage name="repeatNewPassword" component="div"
-                                                                      style={{color: "red"}}></ErrorMessage>
+                                                                      style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                                         <Modal.Footer>
                                                             <Button variant="secondary" style={{
                                                                 backgroundColor: "#dc3545",
@@ -313,7 +313,7 @@ const Profile = () => {
                                                        placeholder={user && user.userFind[0].fullName}>
                                                 </Field>
                                                 <ErrorMessage name="fullName" component="div"
-                                                              style={{color: "red"}}></ErrorMessage>
+                                                              style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                             </div>
                                             <hr/>
                                             <div className="row">
@@ -325,7 +325,7 @@ const Profile = () => {
                                                        placeholder={user && user.userFind[0].job}>
                                                 </Field>
                                                 <ErrorMessage name="job" component="div"
-                                                              style={{color: "red"}}></ErrorMessage>
+                                                              style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                             </div>
                                             <hr/>
                                             <div className="row">
@@ -337,7 +337,7 @@ const Profile = () => {
                                                        placeholder={user && user.userFind[0].phone}>
                                                 </Field>
                                                 <ErrorMessage name="phone" component="div"
-                                                              style={{color: "red"}}></ErrorMessage>
+                                                              style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                             </div>
                                             <hr/>
                                             <div className="row">
@@ -349,7 +349,7 @@ const Profile = () => {
                                                        placeholder={user && user.userFind[0].address}>
                                                 </Field>
                                                 <ErrorMessage name="address" component="div"
-                                                              style={{color: "red"}}></ErrorMessage>
+                                                              style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                             </div>
                                             <hr/>
                                             <div className="row">
@@ -361,7 +361,7 @@ const Profile = () => {
                                                        placeholder={user && user.userFind[0].email}>
                                                 </Field>
                                                 <ErrorMessage name="email" component="div"
-                                                              style={{color: "red"}}></ErrorMessage>
+                                                              style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                             </div>
                                             <hr/>
                                             <div className="row">

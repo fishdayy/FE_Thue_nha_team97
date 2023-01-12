@@ -26,16 +26,6 @@ const ListHome = () => {
         };
         fetchPosts();
     }, [])
-    // useEffect(() => {
-    //     const fetchPosts = async () => {
-    //         setLoading(true);
-    //         const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
-    //         setPosts(res.data);
-    //         setLoading(false);
-    //     };
-    //
-    //     fetchPosts();
-    // }, []);
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -54,7 +44,7 @@ const ListHome = () => {
             <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px", color: "#dc3545"}}>Top 4 popular
                 areas</h2>
             <p style={{textAlign: "center", marginBottom: "30px"}}>Popular places to stay that are of interest to many
-                tourists and often visit</p>
+                tourists and often visit.</p>
         </div>
         <div>
             <TopHome></TopHome>

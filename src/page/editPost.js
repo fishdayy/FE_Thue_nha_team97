@@ -176,7 +176,7 @@ const EditPost = () => {
                                 <div className="Price" style={{display: "flex"}}>
                                     <Field type="number" name="price" placeholder={home && home.price}
                                            style={{borderRadius: "10px"}}/>
-                                    <ErrorMessage name="price" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <ErrorMessage name="price" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                     <label>Price</label>
                                 </div>
                                 <div className="description" style={{display: "flex"}}>

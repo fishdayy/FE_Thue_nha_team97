@@ -48,7 +48,7 @@ const CreatePost = () => {
             let data = {homeId, image}
             await dispatch(createImg(data))
         }
-        navigate('/home')
+        navigate('/home/your-homes')
     }
     //Upload IMG
     const [images, setImages] = useState([]);
@@ -106,7 +106,7 @@ const CreatePost = () => {
                 <h2 style={{textAlign: "center", marginBottom: "20px", marginTop: "20px",color:"#dc3545"}}>Share your accommodation
                     information with us</h2>
                 <p style={{textAlign: "center", marginBottom: "30px"}}>In this step, we'll ask what type of
-                    accommodation you rent and do you want guests to book the whole house or just a specific room</p>
+                    accommodation you rent and do you want guests to book the whole house or just a specific room.</p>
                 <div className="formCreate">
                     <div className="create" id="backgroundCreate" style={{float: "left"}}>
                         <Formik validationSchema={InputSchema} initialValues={{
@@ -123,23 +123,23 @@ const CreatePost = () => {
                                 <h3 style={{color: "#dc3545"}}>Create Post Rent Home</h3>
                                 <div className="name" style={{display: "flex"}}>
                                     <Field type="text" name="name" style={{borderRadius:"10px"}}/>
-                                    <ErrorMessage name="name" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <ErrorMessage name="name" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                     <label>Name</label>
                                 </div>
                                 <div className="address" style={{display: "flex"}}>
                                     <Field type="text" name="address" style={{borderRadius:"10px"}}/>
-                                    <ErrorMessage name="address" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <ErrorMessage name="address" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                     <label>Address</label>
                                 </div>
                                 <div className="Price" style={{display: "flex"}}>
                                     <Field type="number" name="price" style={{borderRadius:"10px"}}/>
-                                    <ErrorMessage name="price" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <ErrorMessage name="price" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                     <label>Price</label>
                                 </div>
                                 <div className="description" style={{display: "flex"}}>
                                     <Field style={{height: "200px",borderRadius:"10px"}} name="description" />
                                     <ErrorMessage name="description" component="div"
-                                                  style={{color: "red"}}></ErrorMessage>
+                                                  style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                     <label>Description</label>
                                 </div>
                                 <div className="category" style={{display: "flex"}}>
@@ -150,7 +150,7 @@ const CreatePost = () => {
                                         <option value="3">Hotel</option>
                                     </Field>
                                     <ErrorMessage name="categoryId" component="div"
-                                                  style={{color: "red"}}></ErrorMessage>
+                                                  style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                     <label>Category</label>
                                 </div>
                                 <div className="bedroom" style={{display: "flex"}}>
@@ -160,7 +160,7 @@ const CreatePost = () => {
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                     </Field>
-                                    <ErrorMessage name="bedroom" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <ErrorMessage name="bedroom" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                     <label>Bedroom</label>
                                 </div>
                                 <div className="bathroom" style={{display: "flex"}}>
@@ -170,7 +170,7 @@ const CreatePost = () => {
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                     </Field>
-                                    <ErrorMessage name="bathroom" component="div" style={{color: "red"}}></ErrorMessage>
+                                    <ErrorMessage name="bathroom" component="div" style={{color: "red",fontSize:"10px"}}></ErrorMessage>
                                     <label>Bathroom</label>
                                 </div>
                                 <div className="submit" style={{border: "1px solid #999",borderRadius:"10px"}}>
@@ -198,7 +198,7 @@ const CreatePost = () => {
                     <br/><br/><br/><br/>
                     <div className="infoCreate" id="backgroundCreate" style={{float: "left", borderRadius: "20px"}}>
                         <form id="createPost" tabIndex="500">
-                            <ol>
+                            <ol style={{color:"rgb(220, 53, 69)"}}>
                                 <div>
                                     <div>
                                         <img
@@ -210,7 +210,7 @@ const CreatePost = () => {
                                             <strong style={{color:"#dc3545"}}>
                                                 Tell us about your place
                                             </strong>
-                                            <p>
+                                            <p style={{color:"black"}}>
                                                 Share some basic information, like the location of the rental property
                                                 and how many guests can stay there.
                                             </p>
@@ -233,7 +233,7 @@ const CreatePost = () => {
                                             <strong style={{color:"#dc3545"}}>
                                                 Make your rental home/room stand out
                                             </strong>
-                                            <p>
+                                            <p style={{color:"black"}}>
                                                 Add 5 or more photos with a title and description – we'll help you do
                                                 it. </p>
                                         </li>
@@ -254,7 +254,7 @@ const CreatePost = () => {
                                             <strong style={{color:"#dc3545"}}>
                                                 Finalize and post rentals
                                             </strong>
-                                            <p>
+                                            <p style={{color:"black"}}>
                                                 Choose whether you want to start with experienced hospitality, choose a
                                                 starting price, or post a rental. </p>
                                         </li>
