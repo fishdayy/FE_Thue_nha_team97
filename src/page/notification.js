@@ -5,7 +5,7 @@ import {showNotifications} from "../service/notificationService";
 
 const Notification = () => {
 
-    const  dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const notifications = useSelector(state => {
         return state.notification.listNotification
@@ -20,13 +20,12 @@ const Notification = () => {
         })()
     }, [])
 
-    return (
-        <>
+    return (<>
             <div style={{marginBottom: "50px"}}>
                 <NavBar></NavBar>
             </div>
             <div className="row">
-                <h2 style={{textAlign: "center",color:"rgb(220 53 69)"}}>Feedback</h2>
+                <h2 style={{textAlign: "center", color: "rgb(220 53 69)"}}>Feedback</h2>
                 <p style={{textAlign: "center"}}>Serve customers with all your heart.</p>
             </div>
             <div style={{backgroundColor: "white", marginTop: '10px'}}>
@@ -47,16 +46,18 @@ const Notification = () => {
                                         <table class="table">
                                             <thead>
                                             <tr className="table-danger">
-                                                <th className="table-danger">Home's Name</th>
                                                 <th className="table-danger">Username</th>
                                                 <th className="table-danger">Action</th>
+                                                <th className="table-danger">Home's Name</th>
+                                                <th className="table-danger">Time</th>
                                             </tr>
                                             </thead>
                                             <tbody className="table-group-striped">
                                             {notifications.map(item => (<tr className="align-bottom">
-                                                <td className="">{item.name}</td>
                                                 <td className="">{item.username}</td>
                                                 <td className="">{item.content}</td>
+                                                <td className="">{item.name}</td>
+                                                <td className="">{item.time}</td>
                                             </tr>))}
                                             </tbody>
                                         </table>
@@ -67,7 +68,6 @@ const Notification = () => {
                     </div>
                 </div>
             </div>
-        </>
-    )
+        </>)
 }
 export default Notification

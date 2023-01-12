@@ -29,7 +29,7 @@ const contractSlice = createSlice({
             state.income = [...action.payload]
         })
         builder.addCase(removeContract.fulfilled, (state, action) => {
-            state.listContract = state.listContract.filter(item => item.id !== action.payload.id)
+            state.listContract = state.listContract.filter(item => item.id !== action.payload)
         })
     }
 })

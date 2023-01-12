@@ -21,7 +21,7 @@ const History = () => {
         (async () => {
             await dispatch(showContractsByUserId(user.id))
         })()
-    }, [contracts])
+    }, [])
 
     return (<div>
         <div className="row">
@@ -90,10 +90,13 @@ const History = () => {
                                                             if (result.isConfirmed) {
                                                                 swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted!', 'success', dispatch(removeContract(item.id)).then((res) => {
                                                                     dispatch(removeHomesDays(res.payload.idContract))
+                                                                    let today = new Date()
+                                                                    let time = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + ' / ' + today.getHours() + 'h' + today.getMinutes() + 'm' + today.getSeconds() + 's'
                                                                     let dataNotification = {
                                                                         homeId: item.homeId,
                                                                         username: user.username,
-                                                                        content: "Cancel the rental"
+                                                                        content: "Cancel the rental",
+                                                                        time: time
                                                                     }
                                                                     dispatch(createNotification(dataNotification))
                                                                 }))

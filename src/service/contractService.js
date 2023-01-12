@@ -44,8 +44,7 @@ export const showIncome = createAsyncThunk(
 export const removeContract = createAsyncThunk(
     'contract/removeContract',
     async (id) => {
-        console.log(1, id)
         let res = await axios.delete('http://localhost:8080/contracts/' + id)
-        return res.data
+        return id
     }
 )
