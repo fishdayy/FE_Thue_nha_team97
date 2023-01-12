@@ -18,7 +18,6 @@ const EditPost = () => {
     const InputSchema = Yup.object().shape({
         price: Yup.number()
             .min(1, "Can't be less than 1$")
-            .required("Please Enter Price!"),
     })
 
     const dispatch = useDispatch();

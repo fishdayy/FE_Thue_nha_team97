@@ -60,7 +60,7 @@ const History = () => {
                                             <td className="">{user.fullName}</td>
                                             <td className="">{item.timeStart}</td>
                                             <td className="">{item.timeEnd}</td>
-                                            <td className="">{item.totalPrice}</td>
+                                            <td className="">{item.totalPrice}$</td>
                                             <td className="">
                                                 <button className="btn btn-danger" type="submit" onClick={() => {
                                                     let today = new Date()

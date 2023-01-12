@@ -117,7 +117,7 @@ const HomeRental = () => {
                                             <td className="">{item.fullName}</td>
                                             <td className="">{item.timeStart}</td>
                                             <td className="">{item.timeEnd}</td>
-                                            <td className="">{item.totalPrice}</td>
+                                            <td className="">{item.totalPrice}$</td>
                                         </tr>))}
                                         </tbody>
                                     </table>
