@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {showImagesByHomeId, showListImage} from "../service/imageService";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
-import {showHome, showStar} from "../service/homeService";
+import {showHome, showListHome, showStar} from "../service/homeService";
 import './CSS/detail.css'
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -23,6 +23,7 @@ import "../page/CSS/comment.css"
 import axios from "axios";
 import mapboxgl from "mapbox-gl";
 import {createNotification} from "../service/notificationService";
+import Pagination from "../components/Pagination";
 
 const InputSchema = Yup.object().shape({
     comment: Yup.string()
@@ -92,13 +93,26 @@ const Detail = () => {
         return state.comment.listComment
     })
 
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(5);
+
     useEffect(() => {
-        (async () => {
+        const fetchPosts =async () => {
+            setLoading(true);
             await dispatch(showHome(id))
             await dispatch(showImagesByHomeId(id))
             await dispatch(showComment(id))
-        })()
+            setLoading(false);
+        };
+        fetchPosts();
     }, [comment.length])
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = comment.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
 
     const getNumberRentDay = () => {
         const get_day_of_time = (d1, d2) => {
@@ -321,39 +335,40 @@ const Detail = () => {
                     <strong>Description</strong>
                     <p>{dataHome[0] && dataHome[0].description}</p>
                 </div>
-                <div className="storeImage" style={{marginTop: "20px"}} id="photoLibrary">
-                    <div className="row">
-                        <strong className="col-12">Photo Library</strong>
-                    </div>
-                    <div className="row">
-                        <div className="col-12" style={{display: "flex", flexWrap: "wrap"}}>
-                            {dataImage.map(image => (
-                                <div className="col-3" style={{marginRight: "10px", marginBottom: "10px"}}>
-                                    <img className="" src={image.image}
-                                         style={{width: "100%", height: "100%"}}
-                                         alt="First slide"/>
-                                </div>))}
+                <div className="storeImage row" style={{marginTop: "20px"}} id="photoLibrary">
+                    <div className="col-8">
+                        <div className="row">
+                            <strong className="col-12">Photo Library</strong>
+                        </div>
+                        <div className="row">
+                            <div className="col-12" style={{display: "flex", flexWrap: "wrap"}}>
+                                {dataImage.map(image => (
+                                    <div className="col-3" style={{marginRight: "10px", marginBottom: "10px"}}>
+                                        <img className="" src={image.image}
+                                             style={{width: "100%", height: "100%"}}
+                                             alt="First slide"/>
+                                    </div>))}
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div>
-                    <div className="row">
-                        <strong className="col-12">Location</strong>
-                    </div>
-                    <div style={{height: '500px', width: '100%'}}>
-                        <GoogleMapReact
-                            bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
-                            defaultCenter={coords}
-                            defaultZoom={11}
-                            center={coords}
-                        >
-                            <AnyReactComponent
-                                lat={coords?.lat}
-                                lng={coords?.lng}
-                                text={<HiLocationMarker color={"red"} size={24}/>}
-                            />
-                        </GoogleMapReact>
+                    <div className="col-4">
+                        <div className="row">
+                            <strong className="col-12">Location</strong>
+                        </div>
+                        <div style={{height: '220px', width: '100%'}}>
+                            <GoogleMapReact
+                                bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
+                                defaultCenter={coords}
+                                defaultZoom={11}
+                                center={coords}
+                            >
+                                <AnyReactComponent
+                                    lat={coords?.lat}
+                                    lng={coords?.lng}
+                                    text={<HiLocationMarker color={"red"} size={24}/>}
+                                />
+                            </GoogleMapReact>
+                        </div>
                     </div>
                 </div>
                 <>
@@ -437,7 +452,8 @@ const Detail = () => {
                             </div>
                         </div>
                     </div>
-                    {comment && comment.map(item => (<div className="border-bottom p-3">
+                    {comment.slice((currentPage - 1) * postsPerPage, (currentPage) * postsPerPage).map(item => (
+                        <div className="border-bottom p-3">
                         <div className="d-flex justify-content-between align-items-center">
                             <div className="user d-flex flex-row align-items-center">
                                 <Avatar alt="Remy Sharp" src={item.avatar} style={{marginRight: "10px"}}/>
@@ -458,6 +474,13 @@ const Detail = () => {
                         </div>
                     </div>))}
                 </>
+                <div>
+                    <Pagination
+                        postsPerPage={postsPerPage}
+                        totalPosts={comment.length}
+                        paginate={paginate}
+                    />
+                </div>
             </div>
         </div>
     </div>)
